@@ -1,0 +1,70 @@
+name: Join Community
+description: Request to join the Claude Code Community Helsinki
+title: "Join Request: "
+labels: ["join-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Welcome to Claude Code Community Helsinki!
+
+        Fill out this form to join our community. Once approved, you'll receive a welcome email with information about upcoming events.
+
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: Your name as you'd like to be known in the community
+      placeholder: e.g., Maria Virtanen
+    validations:
+      required: true
+
+  - type: input
+    id: email
+    attributes:
+      label: Email
+      description: We'll use this to notify you about events (never shared publicly)
+      placeholder: e.g., maria@example.com
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: What best describes you?
+      options:
+        - Software Developer
+        - Designer
+        - Product Manager
+        - Founder / Entrepreneur
+        - Student
+        - Researcher
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: interests
+    attributes:
+      label: What are you interested in?
+      description: Optional - helps us tailor content to the community
+      placeholder: e.g., AI-assisted coding, prompt engineering, building with Claude API...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: newsletter
+    attributes:
+      label: Email notifications
+      options:
+        - label: I want to receive email updates about upcoming events and community news
+          required: false
+
+  - type: checkboxes
+    id: guidelines
+    attributes:
+      label: Community Guidelines
+      description: Please confirm you've read our guidelines
+      options:
+        - label: I have read and agree to follow the [community guidelines](https://claude-community-helsinki.vercel.app/guidelines)
+          required: true

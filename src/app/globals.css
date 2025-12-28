@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Claude Colors */
+    --claude-coral: 218 119 86;
+    --claude-coral-dark: 189 93 58;
+    --claude-cream: 238 236 226;
+    --claude-text: 61 57 41;
+    --claude-dark: 19 19 20;
+
+    /* Finnish Accents */
+    --finnish-blue: 0 53 128;
+    --finnish-white: 255 255 255;
+
+    /* Aurora Colors */
+    --aurora-green: 0 255 135;
+    --aurora-cyan: 96 239 255;
+    --aurora-purple: 185 103 255;
+
+    /* Terminal Colors */
+    --terminal-bg: 26 26 46;
+    --terminal-green: 0 255 65;
+    --terminal-text: 224 224 224;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-claude-cream text-claude-text antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .dark body {
+    @apply bg-claude-dark text-white;
+  }
+
+  /* Selection colors */
+  ::selection {
+    @apply bg-claude-coral/30 text-claude-text;
+  }
+
+  .dark ::selection {
+    @apply bg-claude-coral/40 text-white;
+  }
+}
+
+@layer components {
+  /* Aurora gradient background */
+  .aurora-gradient {
+    background: linear-gradient(
+      -45deg,
+      rgb(var(--aurora-green) / 0.3),
+      rgb(var(--aurora-cyan) / 0.3),
+      rgb(var(--aurora-purple) / 0.3),
+      rgb(var(--finnish-blue) / 0.2)
+    );
+    background-size: 200% 200%;
+    animation: aurora 15s ease infinite;
+  }
+
+  /* Terminal styling */
+  .terminal {
+    @apply bg-terminal-bg rounded-lg font-mono text-terminal-text;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 20px 50px -20px rgba(0, 0, 0, 0.5);
+  }
+
+  .terminal-cursor {
+    @apply inline-block w-2 h-5 bg-terminal-green ml-1;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3
+           bg-claude-coral text-white font-medium rounded-lg
+           hover:bg-claude-coral-dark transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-claude-coral focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3
+           border-2 border-claude-coral text-claude-coral font-medium rounded-lg
+           hover:bg-claude-coral hover:text-white transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-claude-coral focus:ring-offset-2;
+  }
+
+  /* Wave divider */
+  .wave-divider {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wave-divider::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23eeece2' d='M0,30 C360,60 720,0 1080,30 C1260,45 1380,45 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E") no-repeat center bottom;
+    background-size: cover;
+  }
+
+  .dark .wave-divider::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23131314' d='M0,30 C360,60 720,0 1080,30 C1260,45 1380,45 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-claude-coral via-aurora-purple to-finnish-blue bg-clip-text text-transparent;
+  }
+
+  /* Focus visible outline */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-claude-coral focus-visible:ring-offset-2;
+  }
+}
+
+/* Animations */
+@keyframes aurora {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-claude-coral/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-claude-coral/50;
+}
+
+/* Luma embed responsive */
+.luma-embed-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.luma-embed-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
