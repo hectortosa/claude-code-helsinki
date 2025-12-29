@@ -83,32 +83,38 @@ We embrace AI-assisted development! Here's how to contribute using Claude Code.
 
 ### Setting Up Claude Code
 
+> 📚 **Official Documentation**: [code.claude.com/docs/en/setup](https://code.claude.com/docs/en/setup)
+
 1. **Install Claude Code**
 
-   Download and install the native application from [claude.ai/download](https://claude.ai/download)
-
-   Or use the command line installer:
-
-   **macOS:**
+   **macOS, Linux, or WSL:**
    ```bash
-   brew install claude
+   curl -fsSL https://claude.ai/install.sh | bash
    ```
 
-   **Linux:**
-   ```bash
-   curl -fsSL https://claude.ai/install.sh | sh
+   **Windows (PowerShell):**
+   ```powershell
+   irm https://claude.ai/install.ps1 | iex
    ```
 
-   **Windows:**
-   Download the installer from [claude.ai/download](https://claude.ai/download)
+   **Verify Installation:**
+   ```bash
+   claude doctor
+   ```
 
-2. **Open the Project**
+2. **Authenticate**
+
+   Follow the OAuth process to connect to your Claude account. You'll need either:
+   - Active billing in the Anthropic Console, or
+   - A Claude Pro/Max subscription
+
+3. **Open the Project**
    ```bash
    cd claude-community-helsinki-website
-   claude .
+   claude
    ```
 
-3. **Start Contributing**
+4. **Start Contributing**
 
    Claude Code will open with the project loaded. You can now start asking questions and making contributions!
 
