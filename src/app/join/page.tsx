@@ -46,7 +46,7 @@ export default function JoinPage() {
         ? "I want to receive email updates about upcoming events and community news"
         : "",
       "guidelines[]":
-        "I have read and agree to follow the [community guidelines](https://claude-community-helsinki.vercel.app/guidelines)",
+        "I have read and agree to follow the [community guidelines](https://claude-community-helsinki.codesharegrow.net/guidelines)",
     });
 
     // Redirect to GitHub issue creation

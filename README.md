@@ -7,7 +7,7 @@
 
 > **Connect. Build. Share.** The official Anthropic community bringing together creators, builders, and professionals in Helsinki to exchange knowledge about AI-assisted development.
 
-[Visit Website](https://claude-community-helsinki.vercel.app) • [Join Events](https://lu.ma/ClaudeCommunityHelsinki) • [Contribute](#-contributing-with-claude-code)
+[Visit Website](https://claude-community-helsinki.codesharegrow.net) • [Join Events](https://lu.ma/ClaudeCommunityHelsinki) • [Contribute](#-contributing-with-claude-code)
 
 ---
 
@@ -320,8 +320,7 @@ See [CLAUDE.md](./CLAUDE.md) for complete design system documentation.
 ### Join Us
 
 - **📅 Events** - [lu.ma/ClaudeCommunityHelsinki](https://lu.ma/ClaudeCommunityHelsinki)
-- **🌐 Website** - [claude-community-helsinki.vercel.app](https://claude-community-helsinki.vercel.app)
-- **🐦 Twitter** - [@anthropikiAI](https://twitter.com/anthropikiAI)
+- **🌐 Website** - [claude-community-helsinki.codesharegrow.net](https://claude-community-helsinki.codesharegrow.net)
 
 ### Ways to Contribute
 
@@ -375,6 +374,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE
 
 *Connect. Build. Share.*
 
-[Website](https://claude-community-helsinki.vercel.app) • [Events](https://lu.ma/ClaudeCommunityHelsinki) • [GitHub](https://github.com/claude-community-helsinki)
+[Website](https://claude-community-helsinki.codesharegrow.net) • [Events](https://lu.ma/ClaudeCommunityHelsinki) • [GitHub](https://github.com/claude-community-helsinki)
 
 </div>
