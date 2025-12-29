@@ -13,21 +13,21 @@ export default function AboutPage() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-claude-text mb-4">
+          <h1 className="text-4xl font-bold text-claude-text dark:text-white mb-4">
             About the Community
           </h1>
-          <p className="text-claude-text/60 text-lg">
+          <p className="text-claude-text/60 dark:text-white/60 text-lg">
             An official Anthropic initiative for the Nordic AI community
           </p>
         </div>
 
         {/* Main Content */}
         <div className="prose prose-lg max-w-none">
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-claude-text/5 mb-8">
-            <h2 className="text-2xl font-bold text-claude-text mb-4">
+          <div className="bg-white dark:bg-terminal-bg p-8 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 mb-8">
+            <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
               Our Mission
             </h2>
-            <p className="text-claude-text/70 leading-relaxed">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
               The Claude Code Community Helsinki brings together creators,
               builders, and professionals to facilitate the exchange of
               knowledge, tips, and ways of working with AI-assisted development.
@@ -36,11 +36,11 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-claude-text/5 mb-8">
-            <h2 className="text-2xl font-bold text-claude-text mb-4">
+          <div className="bg-white dark:bg-terminal-bg p-8 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 mb-8">
+            <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
               Supported by Anthropic
             </h2>
-            <p className="text-claude-text/70 leading-relaxed mb-4">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed mb-4">
               This community is an official initiative supported by{" "}
               <a
                 href={SITE_CONFIG.links.anthropic}
@@ -54,7 +54,7 @@ export default function AboutPage() {
               Anthropic to bring the latest updates, best practices, and
               resources to our community members.
             </p>
-            <p className="text-claude-text/70 leading-relaxed">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
               As part of the global Claude Code community network, we connect
               developers in Helsinki and the Nordic region with the broader
               ecosystem of Claude users and builders worldwide. Discover other
@@ -71,11 +71,11 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-claude-text/5 mb-8">
-            <h2 className="text-2xl font-bold text-claude-text mb-4">
+          <div className="bg-white dark:bg-terminal-bg p-8 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 mb-8">
+            <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
               Part of a Global Network
             </h2>
-            <p className="text-claude-text/70 leading-relaxed mb-4">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed mb-4">
               Helsinki is one of 39+ cities worldwide with active Claude Code
               communities. We&apos;re connected through{" "}
               <a
@@ -88,18 +88,18 @@ export default function AboutPage() {
               </a>
               , a global directory of community leaders and events.
             </p>
-            <p className="text-claude-text/70 leading-relaxed">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
               Whether you&apos;re traveling or looking to connect with other
               communities, you can find Claude Code meetups and organizers
               around the world.
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-claude-text/5 mb-8">
-            <h2 className="text-2xl font-bold text-claude-text mb-4">
+          <div className="bg-white dark:bg-terminal-bg p-8 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 mb-8">
+            <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
               What We Do
             </h2>
-            <ul className="space-y-4 text-claude-text/70">
+            <ul className="space-y-4 text-claude-text/70 dark:text-white/70">
               <li className="flex items-start gap-3">
                 <span className="text-claude-coral mt-1">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -163,16 +163,16 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-claude-text/5">
-            <h2 className="text-2xl font-bold text-claude-text mb-4">
+          <div className="bg-white dark:bg-terminal-bg p-8 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10">
+            <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
               Location
             </h2>
-            <p className="text-claude-text/70 leading-relaxed mb-4">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed mb-4">
               We&apos;re based in Helsinki, Finland 🇫🇮 and welcome members from
               across the Nordic region. Our events are typically held in
               Helsinki, with some virtual options available.
             </p>
-            <p className="text-claude-text/70 leading-relaxed">
+            <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
               Whether you&apos;re a seasoned developer, a curious beginner, or
               someone interested in the future of AI-assisted development,
               you&apos;re welcome to join our community.

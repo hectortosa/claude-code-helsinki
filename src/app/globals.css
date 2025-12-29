@@ -88,7 +88,8 @@
     @apply inline-flex items-center justify-center px-6 py-3
            border-2 border-claude-coral text-claude-coral font-medium rounded-lg
            hover:bg-claude-coral hover:text-white transition-colors duration-200
-           focus:outline-none focus:ring-2 focus:ring-claude-coral focus:ring-offset-2;
+           focus:outline-none focus:ring-2 focus:ring-claude-coral focus:ring-offset-2
+           dark:text-claude-coral dark:border-claude-coral dark:hover:bg-claude-coral dark:hover:text-white;
   }
 
   /* Wave divider */
@@ -165,6 +166,18 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-claude-coral/50;
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-claude-dark;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-full;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-white/30;
 }
 
 /* Luma embed responsive */

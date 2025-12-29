@@ -9,15 +9,15 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-claude-text/10 bg-claude-cream/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-claude-text/10 dark:border-white/10 bg-claude-cream/80 dark:bg-claude-dark/80 backdrop-blur-md">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <span className="text-2xl font-bold text-claude-coral">/</span>
-            <span className="font-semibold text-claude-text group-hover:text-claude-coral transition-colors">
+            <span className="font-semibold text-claude-text dark:text-white group-hover:text-claude-coral transition-colors">
               Claude Code
-              <span className="text-claude-text/60 ml-1">Helsinki</span>
+              <span className="text-claude-text/60 dark:text-white/60 ml-1">Helsinki</span>
             </span>
           </Link>
 
@@ -27,7 +27,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-claude-text/80 hover:text-claude-coral transition-colors font-medium"
+                className="text-claude-text/80 dark:text-white/80 hover:text-claude-coral transition-colors font-medium"
               >
                 {item.label}
               </Link>
@@ -40,7 +40,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-claude-text hover:text-claude-coral transition-colors"
+            className="md:hidden p-2 text-claude-text dark:text-white hover:text-claude-coral transition-colors"
             aria-label="Toggle menu"
           >
             <svg
@@ -81,7 +81,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-claude-text/80 hover:text-claude-coral transition-colors font-medium"
+                className="text-claude-text/80 dark:text-white/80 hover:text-claude-coral transition-colors font-medium"
               >
                 {item.label}
               </Link>

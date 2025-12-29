@@ -13,14 +13,14 @@ export default function ResourcesPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-claude-text mb-4">Resources</h1>
-          <p className="text-claude-text/60 text-lg">
+          <h1 className="text-4xl font-bold text-claude-text dark:text-white mb-4">Resources</h1>
+          <p className="text-claude-text/60 dark:text-white/60 text-lg">
             Videos, presentations, and resources from our community events
           </p>
         </div>
 
         {/* Coming Soon */}
-        <div className="bg-white p-12 rounded-xl shadow-sm border border-claude-text/5 text-center mb-12">
+        <div className="bg-white dark:bg-terminal-bg p-12 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 text-center mb-12">
           <div className="w-20 h-20 bg-claude-coral/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg
               className="w-10 h-10 text-claude-coral"
@@ -36,10 +36,10 @@ export default function ResourcesPage() {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-claude-text mb-4">
+          <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
             Coming Soon
           </h2>
-          <p className="text-claude-text/60 max-w-lg mx-auto">
+          <p className="text-claude-text/60 dark:text-white/60 max-w-lg mx-auto">
             We&apos;re working on adding videos, presentations, and
             transcriptions from our past community meetups. Check back soon!
           </p>
@@ -52,7 +52,7 @@ export default function ResourcesPage() {
             href={`${LUMA_CONFIG.calendarUrl}?k=c&period=past`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white p-6 rounded-xl shadow-sm border border-claude-text/5 hover:border-claude-coral/30 transition-colors group"
+            className="bg-white dark:bg-terminal-bg p-6 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 hover:border-claude-coral/30 transition-colors group"
           >
             <div className="flex items-center gap-4 mb-3">
               <div className="w-12 h-12 bg-claude-coral/10 rounded-lg flex items-center justify-center">
@@ -70,11 +70,11 @@ export default function ResourcesPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-claude-text group-hover:text-claude-coral transition-colors">
+              <h3 className="text-xl font-semibold text-claude-text dark:text-white group-hover:text-claude-coral transition-colors">
                 Past Events on Luma
               </h3>
             </div>
-            <p className="text-claude-text/60">
+            <p className="text-claude-text/60 dark:text-white/60">
               View details and recaps from our previous meetups and workshops.
             </p>
           </a>
@@ -84,7 +84,7 @@ export default function ResourcesPage() {
             href="https://docs.anthropic.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white p-6 rounded-xl shadow-sm border border-claude-text/5 hover:border-claude-coral/30 transition-colors group"
+            className="bg-white dark:bg-terminal-bg p-6 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 hover:border-claude-coral/30 transition-colors group"
           >
             <div className="flex items-center gap-4 mb-3">
               <div className="w-12 h-12 bg-claude-coral/10 rounded-lg flex items-center justify-center">
@@ -102,11 +102,11 @@ export default function ResourcesPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-claude-text group-hover:text-claude-coral transition-colors">
+              <h3 className="text-xl font-semibold text-claude-text dark:text-white group-hover:text-claude-coral transition-colors">
                 Claude Documentation
               </h3>
             </div>
-            <p className="text-claude-text/60">
+            <p className="text-claude-text/60 dark:text-white/60">
               Official Anthropic documentation for Claude and the API.
             </p>
           </a>
@@ -116,7 +116,7 @@ export default function ResourcesPage() {
             href="https://claude.ai/code"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white p-6 rounded-xl shadow-sm border border-claude-text/5 hover:border-claude-coral/30 transition-colors group"
+            className="bg-white dark:bg-terminal-bg p-6 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 hover:border-claude-coral/30 transition-colors group"
           >
             <div className="flex items-center gap-4 mb-3">
               <div className="w-12 h-12 bg-claude-coral/10 rounded-lg flex items-center justify-center">
@@ -134,11 +134,11 @@ export default function ResourcesPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-claude-text group-hover:text-claude-coral transition-colors">
+              <h3 className="text-xl font-semibold text-claude-text dark:text-white group-hover:text-claude-coral transition-colors">
                 Claude Code
               </h3>
             </div>
-            <p className="text-claude-text/60">
+            <p className="text-claude-text/60 dark:text-white/60">
               Learn more about Claude Code and AI-assisted development.
             </p>
           </a>
@@ -148,7 +148,7 @@ export default function ResourcesPage() {
             href={SITE_CONFIG.links.anthropic}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white p-6 rounded-xl shadow-sm border border-claude-text/5 hover:border-claude-coral/30 transition-colors group"
+            className="bg-white dark:bg-terminal-bg p-6 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 hover:border-claude-coral/30 transition-colors group"
           >
             <div className="flex items-center gap-4 mb-3">
               <div className="w-12 h-12 bg-claude-coral/10 rounded-lg flex items-center justify-center">
@@ -166,11 +166,11 @@ export default function ResourcesPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-claude-text group-hover:text-claude-coral transition-colors">
+              <h3 className="text-xl font-semibold text-claude-text dark:text-white group-hover:text-claude-coral transition-colors">
                 Anthropic
               </h3>
             </div>
-            <p className="text-claude-text/60">
+            <p className="text-claude-text/60 dark:text-white/60">
               Visit Anthropic&apos;s website to learn about Claude and AI safety.
             </p>
           </a>

@@ -64,21 +64,21 @@ export default function JoinPage() {
           <div className="max-w-2xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold text-claude-text mb-4">
+              <h1 className="text-4xl font-bold text-claude-text dark:text-white mb-4">
                 Join the Community
               </h1>
-              <p className="text-claude-text/60 text-lg">
+              <p className="text-claude-text/60 dark:text-white/60 text-lg">
                 Get notified about upcoming events and connect with fellow
                 Claude enthusiasts in Helsinki.
               </p>
             </div>
 
             {/* Info Box */}
-            <div className="bg-finnish-blue/5 border border-finnish-blue/20 p-6 rounded-xl mb-8">
+            <div className="bg-white dark:bg-terminal-bg border border-claude-text/5 dark:border-white/10 p-6 rounded-xl mb-8 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-finnish-blue/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-claude-coral/10 rounded-lg flex items-center justify-center flex-shrink-0">
                   <svg
-                    className="w-5 h-5 text-finnish-blue"
+                    className="w-5 h-5 text-claude-coral"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -86,10 +86,10 @@ export default function JoinPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-claude-text mb-1">
+                  <h3 className="font-semibold text-claude-text dark:text-white mb-1">
                     Join via GitHub
                   </h3>
-                  <p className="text-sm text-claude-text/60">
+                  <p className="text-sm text-claude-text/60 dark:text-white/60">
                     We use GitHub Issues to manage community requests. Fill out
                     the form below and you&apos;ll be redirected to GitHub to
                     submit your request. A GitHub account is required.
@@ -101,13 +101,13 @@ export default function JoinPage() {
             {/* Form */}
             <form
               onSubmit={handleSubmit}
-              className="bg-white rounded-xl shadow-lg p-8 border border-claude-text/5"
+              className="bg-white dark:bg-terminal-bg rounded-xl shadow-lg p-8 border border-claude-text/5 dark:border-white/10"
             >
               {/* Name */}
               <div className="mb-6">
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-claude-text mb-2"
+                  className="block text-sm font-medium text-claude-text dark:text-white mb-2"
                 >
                   Name *
                 </label>
@@ -119,7 +119,7 @@ export default function JoinPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
                   placeholder="Your name"
                 />
               </div>
@@ -128,7 +128,7 @@ export default function JoinPage() {
               <div className="mb-6">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-claude-text mb-2"
+                  className="block text-sm font-medium text-claude-text dark:text-white mb-2"
                 >
                   Email *
                 </label>
@@ -140,10 +140,10 @@ export default function JoinPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
                   placeholder="your@email.com"
                 />
-                <p className="mt-1 text-xs text-claude-text/50">
+                <p className="mt-1 text-xs text-claude-text/50 dark:text-white/50">
                   Your email will only be visible to community organizers
                 </p>
               </div>
@@ -152,7 +152,7 @@ export default function JoinPage() {
               <div className="mb-6">
                 <label
                   htmlFor="role"
-                  className="block text-sm font-medium text-claude-text mb-2"
+                  className="block text-sm font-medium text-claude-text dark:text-white mb-2"
                 >
                   What best describes you? *
                 </label>
@@ -163,7 +163,7 @@ export default function JoinPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, role: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors bg-white dark:bg-claude-dark text-claude-text dark:text-white"
                 >
                   <option value="">Select an option</option>
                   <option value="developer">Software Developer</option>
@@ -180,7 +180,7 @@ export default function JoinPage() {
               <div className="mb-6">
                 <label
                   htmlFor="interests"
-                  className="block text-sm font-medium text-claude-text mb-2"
+                  className="block text-sm font-medium text-claude-text dark:text-white mb-2"
                 >
                   What are you interested in? (optional)
                 </label>
@@ -191,7 +191,7 @@ export default function JoinPage() {
                     setFormData({ ...formData, interests: e.target.value })
                   }
                   rows={3}
-                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors resize-none text-claude-text dark:text-white"
                   placeholder="AI-assisted coding, prompt engineering, Claude API..."
                 />
               </div>
@@ -207,7 +207,7 @@ export default function JoinPage() {
                     }
                     className="mt-1 w-5 h-5 rounded border-claude-text/20 text-claude-coral focus:ring-claude-coral"
                   />
-                  <span className="text-sm text-claude-text/70">
+                  <span className="text-sm text-claude-text/70 dark:text-white/70">
                     I want to receive email updates about upcoming events and
                     community news
                   </span>
@@ -226,7 +226,7 @@ export default function JoinPage() {
                     }
                     className="mt-1 w-5 h-5 rounded border-claude-text/20 text-claude-coral focus:ring-claude-coral"
                   />
-                  <span className="text-sm text-claude-text/70">
+                  <span className="text-sm text-claude-text/70 dark:text-white/70">
                     I have read and agree to follow the{" "}
                     <Link
                       href="/guidelines"
@@ -256,14 +256,14 @@ export default function JoinPage() {
                 Continue to GitHub
               </button>
 
-              <p className="mt-4 text-center text-sm text-claude-text/50">
+              <p className="mt-4 text-center text-sm text-claude-text/50 dark:text-white/50">
                 You&apos;ll be redirected to GitHub to submit your join request
               </p>
             </form>
 
             {/* Direct Link */}
             <div className="mt-8 text-center">
-              <p className="text-claude-text/60 text-sm mb-2">
+              <p className="text-claude-text/60 dark:text-white/60 text-sm mb-2">
                 Or go directly to GitHub:
               </p>
               <a
