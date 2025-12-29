@@ -24,7 +24,7 @@ export const SITE_CONFIG = {
   name: "Claude Code Community Helsinki",
   description:
     "Connect. Build. Share. The official Anthropic community for creators, builders, and professionals in Helsinki.",
-  url: "https://claude-community-helsinki.vercel.app",
+  url: "https://claude-community-helsinki.codesharegrow.net",
   ogImage: "/og-image.png",
   links: {
     luma: LUMA_CONFIG.calendarUrl,

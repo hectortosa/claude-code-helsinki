@@ -66,5 +66,5 @@ body:
       label: Community Guidelines
       description: Please confirm you've read our guidelines
       options:
-        - label: I have read and agree to follow the [community guidelines](https://claude-community-helsinki.vercel.app/guidelines)
+        - label: I have read and agree to follow the [community guidelines](https://claude-community-helsinki.codesharegrow.net/guidelines)
           required: true

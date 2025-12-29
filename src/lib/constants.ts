@@ -44,7 +44,6 @@ Or type 'join' to get event notifications via email.`,
 export const SOCIAL_LINKS = {
   luma: "https://lu.ma/ClaudeCommunityHelsinki",
   github: "https://github.com/claude-community-helsinki",
-  twitter: "https://twitter.com/anthropikiAI",
 } as const;
 
 /**
