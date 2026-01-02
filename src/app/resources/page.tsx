@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Resources",
-  description: "Videos, presentations, and resources from the Claude Code Community Helsinki",
+  description: "Videos, presentations, and resources from Claude Code Helsinki",
 };
 
 export default function ResourcesPage() {

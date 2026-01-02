@@ -17,7 +17,7 @@ export function LumaCalendar({ className }: LumaCalendarProps) {
           frameBorder="0"
           style={{ border: "1px solid #bfcbda88", borderRadius: "8px" }}
           allowFullScreen
-          aria-label="Claude Code Community Helsinki Events Calendar"
+          aria-label="Claude Code Helsinki Events Calendar"
           title="Luma Events Calendar"
         />
       </div>

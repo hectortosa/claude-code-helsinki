@@ -13,7 +13,7 @@ export function Terminal() {
   const [lines, setLines] = useState<TerminalLine[]>([
     {
       type: "output",
-      content: `Welcome to Claude Code Community Helsinki!
+      content: `Welcome to Claude Code Helsinki!
 Type 'help' for available commands or 'join' to subscribe.`,
     },
   ]);
@@ -63,8 +63,8 @@ Thank you for joining the community!`);
         break;
       case "join":
         setIsJoining(true);
-        addLine("output", `Join the Claude Code Community Helsinki!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        addLine("output", `Join the Claude Code Helsinki!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Get notified about upcoming events and meetups.
 

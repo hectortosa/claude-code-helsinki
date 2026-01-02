@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Learn about the Claude Code Community Helsinki - an official Anthropic initiative",
+  description: "Learn about Claude Code Helsinki - an official Anthropic initiative",
 };
 
 export default function AboutPage() {
@@ -28,7 +28,7 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
-              The Claude Code Community Helsinki brings together creators,
+              Claude Code Helsinki brings together creators,
               builders, and professionals to facilitate the exchange of
               knowledge, tips, and ways of working with AI-assisted development.
               We share findings, demonstrate projects, network, and learn from

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Events",
-  description: "Upcoming and past events from the Claude Code Community Helsinki",
+  description: "Upcoming and past events from Claude Code Helsinki",
 };
 
 export default function EventsPage() {

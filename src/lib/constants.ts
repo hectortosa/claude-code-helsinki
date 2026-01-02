@@ -14,8 +14,8 @@ export const TERMINAL_COMMANDS = {
   },
   about: {
     description: "About the community",
-    response: `Claude Code Community Helsinki
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    response: `Claude Code Helsinki
+━━━━━━━━━━━━━━━━━━━━━
 
 Connect. Build. Share.
 

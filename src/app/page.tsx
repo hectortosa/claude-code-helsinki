@@ -19,7 +19,7 @@ export default function Home() {
 
             {/* Heading */}
             <h1 className="text-4xl md:text-6xl font-bold text-claude-text dark:text-white mb-6 text-balance">
-              Claude Code Community
+              Claude Code
               <span className="block text-claude-coral">Helsinki</span>
             </h1>
 

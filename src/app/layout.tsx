@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     "Developer",
     "Meetup",
   ],
-  authors: [{ name: "Claude Code Community Helsinki" }],
-  creator: "Claude Code Community Helsinki",
+  authors: [{ name: "Claude Code Helsinki" }],
+  creator: "Claude Code Helsinki",
   openGraph: {
     type: "website",
     locale: "en_FI",

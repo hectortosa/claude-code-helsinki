@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Community Guidelines",
   description:
-    "Community guidelines for the Claude Code Community Helsinki - creating a welcoming space for everyone",
+    "Community guidelines for Claude Code Helsinki - creating a welcoming space for everyone",
 };
 
 export default function GuidelinesPage() {
@@ -25,7 +25,7 @@ export default function GuidelinesPage() {
         {/* Introduction */}
         <div className="bg-claude-coral/5 dark:bg-claude-coral/10 border border-claude-coral/20 p-8 rounded-xl mb-12">
           <p className="text-claude-text/80 dark:text-white/80 leading-relaxed">
-            The Claude Code Community Helsinki is built on mutual respect,
+            Claude Code Helsinki is built on mutual respect,
             curiosity, and a shared passion for AI-assisted development. These
             guidelines help us maintain a space where everyone feels welcome to
             participate, ask questions, and share their knowledge - regardless

@@ -121,8 +121,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-claude-text/10 dark:border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-claude-text/60 dark:text-white/60 text-sm">
-            {currentYear} Claude Code Community Helsinki. Supported by
-            Anthropic.
+            {currentYear} Claude Code Helsinki. Supported by Anthropic.
           </p>
           <div className="flex items-center gap-2 text-sm text-claude-text/60 dark:text-white/60">
             <span>Made with</span>
