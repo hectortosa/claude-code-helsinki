@@ -30,11 +30,10 @@ Type 'join' to join the community.`,
   },
   events: {
     description: "Show upcoming events",
-    response: `Fetching events from Luma...
+    response: `Opening Luma calendar...
 
-Visit our calendar: lu.ma/ClaudeCommunityHelsinki
-
-Or type 'join' to join the community.`,
+View upcoming meetups, workshops, and community events.
+Type 'join' to join the community.`,
   },
 } as const;
 

@@ -211,6 +211,9 @@ Type 'yes' to continue or 'cancel' to abort:`
         break;
       case "events":
         addLine("output", TERMINAL_COMMANDS.events.response);
+        setTimeout(() => {
+          window.open("https://lu.ma/ClaudeCommunityHelsinki", "_blank");
+        }, 500);
         break;
       case "join":
         addLine(
