@@ -322,7 +322,6 @@ Enter your name:`
             onChange={(e) => setCurrentInput(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-green"
-            autoFocus
             spellCheck={false}
             autoComplete={joinStep === "email" ? "email" : "off"}
           />
