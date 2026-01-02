@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Snowflake, Moon } from "lucide-react";
+import { Snowflake, AudioLines } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -67,7 +67,7 @@ export function Header() {
               {isDark ? (
                 <Snowflake className="w-5 h-5" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <AudioLines className="w-5 h-5" />
               )}
             </button>
             <Link href="/join" className="btn-primary text-sm">
@@ -85,7 +85,7 @@ export function Header() {
               {isDark ? (
                 <Snowflake className="w-5 h-5" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <AudioLines className="w-5 h-5" />
               )}
             </button>
             <button
