@@ -85,6 +85,15 @@ Type 'help' for available commands or 'join' to subscribe.`,
   const handleJoinInput = (input: string) => {
     const trimmed = input.trim();
 
+    // Allow canceling at any step
+    if (trimmed.toLowerCase() === "cancel" || trimmed.toLowerCase() === "exit") {
+      addLine("input", trimmed);
+      addLine("output", "Join request cancelled.");
+      setJoinStep("idle");
+      setJoinData({ name: "", email: "", role: "", interests: "" });
+      return;
+    }
+
     switch (joinStep) {
       case "name":
         if (!trimmed) {
@@ -223,6 +232,8 @@ Type 'yes' to continue or 'cancel' to abort:`
 
 Get notified about upcoming events and connect with
 fellow Claude enthusiasts in Helsinki.
+
+Type 'cancel' at any time to abort.
 
 Enter your name:`
         );
