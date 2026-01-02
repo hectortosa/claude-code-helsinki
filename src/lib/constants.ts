@@ -6,7 +6,7 @@ export const TERMINAL_COMMANDS = {
     description: "Show available commands",
     response: `Available commands:
   help     - Show this help message
-  join     - Subscribe to the community newsletter
+  join     - Join the community via GitHub
   events   - Show upcoming events
   about    - Learn about the community
   clear    - Clear the terminal
@@ -26,7 +26,7 @@ We host meetups, workshops, and demos focused on
 AI-assisted development with Claude Code.
 
 Type 'events' to see upcoming meetups.
-Type 'join' to subscribe to updates.`,
+Type 'join' to join the community.`,
   },
   events: {
     description: "Show upcoming events",
@@ -34,7 +34,7 @@ Type 'join' to subscribe to updates.`,
 
 Visit our calendar: lu.ma/ClaudeCommunityHelsinki
 
-Or type 'join' to get event notifications via email.`,
+Or type 'join' to join the community.`,
   },
 } as const;
 

@@ -52,18 +52,18 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-claude-text dark:text-white mb-4">
-              Interactive Terminal
+              Terminal
             </h2>
             <p className="text-claude-text/60 dark:text-white/60">
-              Try our terminal - type{" "}
-              <code className="px-2 py-1 bg-terminal-bg text-terminal-green rounded text-sm font-mono">
-                help
-              </code>{" "}
-              to get started or{" "}
+              Join the community the Claude Code way - type{" "}
               <code className="px-2 py-1 bg-terminal-bg text-terminal-green rounded text-sm font-mono">
                 join
               </code>{" "}
-              to subscribe
+              to request access to the community or{" "}
+              <code className="px-2 py-1 bg-terminal-bg text-terminal-green rounded text-sm font-mono">
+                help
+              </code>{" "}
+              for other commands
             </p>
           </div>
           <Terminal />
