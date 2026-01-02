@@ -57,10 +57,10 @@ Website Join Form → GitHub Issue (pre-filled)
 - Dogfooding Claude Code for community management
 
 ### Luma Configuration
-- **Calendar URL**: https://lu.ma/ClaudeCommunityHelsinki
+- **Calendar URL**: https://luma.com/ClaudeCodeHelsinki
 - **Calendar ID**: cal-9FcoJqdJCGyefXC
 - **Embed URL**: https://lu.ma/embed/calendar/cal-9FcoJqdJCGyefXC/events
-- **Past Events**: https://lu.ma/ClaudeCommunityHelsinki?k=c&period=past
+- **Past Events**: https://luma.com/ClaudeCodeHelsinki?k=c&period=past
 
 ### Future Content
 - Videos from meetups
