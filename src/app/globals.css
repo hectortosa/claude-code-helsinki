@@ -50,7 +50,17 @@
 }
 
 @layer components {
-  /* Aurora gradient background */
+  /* Winter sky background - light mode */
+  .winter-sky {
+    background: linear-gradient(
+      180deg,
+      #e8eef2 0%,
+      #dde5eb 50%,
+      #d5dfe7 100%
+    );
+  }
+
+  /* Aurora gradient background - dark mode */
   .aurora-gradient {
     background: linear-gradient(
       -45deg,
@@ -133,6 +143,27 @@
   50% {
     opacity: 0;
   }
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.animate-snowfall {
+  animation: snowfall linear infinite;
 }
 
 /* Scrollbar styling */
