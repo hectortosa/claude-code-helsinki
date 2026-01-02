@@ -92,25 +92,10 @@
            dark:text-claude-coral dark:border-claude-coral dark:hover:bg-claude-coral dark:hover:text-white;
   }
 
-  /* Wave divider */
+  /* Forest divider container */
   .wave-divider {
     position: relative;
     overflow: hidden;
-  }
-
-  .wave-divider::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23eeece2' d='M0,30 C360,60 720,0 1080,30 C1260,45 1380,45 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E") no-repeat center bottom;
-    background-size: cover;
-  }
-
-  .dark .wave-divider::after {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23131314' d='M0,30 C360,60 720,0 1080,30 C1260,45 1380,45 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E");
   }
 }
 
