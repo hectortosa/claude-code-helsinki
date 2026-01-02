@@ -41,7 +41,7 @@ Type 'join' to join the community.`,
  * Social links
  */
 export const SOCIAL_LINKS = {
-  luma: "https://lu.ma/ClaudeCommunityHelsinki",
+  luma: "https://luma.com/ClaudeCodeHelsinki",
   github: "https://github.com/claude-community-helsinki",
 } as const;
 

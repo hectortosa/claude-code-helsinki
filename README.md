@@ -7,7 +7,7 @@
 
 > **Connect. Build. Share.** The official Anthropic community bringing together creators, builders, and professionals in Helsinki to exchange knowledge about AI-assisted development.
 
-[Visit Website](https://claude-community-helsinki.codesharegrow.net) • [Join Events](https://lu.ma/ClaudeCommunityHelsinki) • [Contribute](#-contributing-with-claude-code)
+[Visit Website](https://claude-code-helsinki.codesharegrow.net) • [Join Events](https://luma.com/ClaudeCodeHelsinki) • [Contribute](#-contributing-with-claude-code)
 
 ---
 
@@ -319,8 +319,8 @@ See [CLAUDE.md](./CLAUDE.md) for complete design system documentation.
 
 ### Join Us
 
-- **📅 Events** - [lu.ma/ClaudeCommunityHelsinki](https://lu.ma/ClaudeCommunityHelsinki)
-- **🌐 Website** - [claude-community-helsinki.codesharegrow.net](https://claude-community-helsinki.codesharegrow.net)
+- **📅 Events** - [luma.com/ClaudeCodeHelsinki](https://luma.com/ClaudeCodeHelsinki)
+- **🌐 Website** - [claude-code-helsinki.codesharegrow.net](https://claude-code-helsinki.codesharegrow.net)
 
 ### Ways to Contribute
 
@@ -374,6 +374,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE
 
 *Connect. Build. Share.*
 
-[Website](https://claude-community-helsinki.codesharegrow.net) • [Events](https://lu.ma/ClaudeCommunityHelsinki) • [GitHub](https://github.com/claude-community-helsinki)
+[Website](https://claude-code-helsinki.codesharegrow.net) • [Events](https://luma.com/ClaudeCodeHelsinki) • [GitHub](https://github.com/claude-community-helsinki)
 
 </div>

@@ -154,7 +154,7 @@ import { Terminal } from "@/components/terminal/Terminal";
 
 Embedded event calendar from Luma in `src/components/luma/LumaCalendar.tsx`:
 
-- Calendar URL: `https://lu.ma/ClaudeCommunityHelsinki`
+- Calendar URL: `https://luma.com/ClaudeCodeHelsinki`
 - Embed configuration in `src/lib/utils.ts` (`LUMA_CONFIG`)
 - Responsive iframe container with padding
 
@@ -221,7 +221,7 @@ NEXT_PUBLIC_WEB3FORMS_KEY=your_access_key_here
 NEXT_PUBLIC_BUTTONDOWN_API_KEY=your_api_key_here
 
 # Luma Calendar
-NEXT_PUBLIC_LUMA_CALENDAR_URL=https://lu.ma/ClaudeCommunityHelsinki
+NEXT_PUBLIC_LUMA_CALENDAR_URL=https://luma.com/ClaudeCodeHelsinki
 ```
 
 ## Development Commands
@@ -480,7 +480,7 @@ src/app/globals.css
 
 ### Community
 
-- **Luma Calendar**: https://lu.ma/ClaudeCommunityHelsinki
+- **Luma Calendar**: https://luma.com/ClaudeCodeHelsinki
 - **Anthropic**: https://anthropic.com
 - **Claude AI**: https://claude.ai
 

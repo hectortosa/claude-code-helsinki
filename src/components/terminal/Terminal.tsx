@@ -212,7 +212,7 @@ Type 'yes' to continue or 'cancel' to abort:`
       case "events":
         addLine("output", TERMINAL_COMMANDS.events.response);
         setTimeout(() => {
-          window.open("https://lu.ma/ClaudeCommunityHelsinki", "_blank");
+          window.open("https://luma.com/ClaudeCodeHelsinki", "_blank");
         }, 500);
         break;
       case "join":

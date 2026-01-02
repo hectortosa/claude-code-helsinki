@@ -12,8 +12,8 @@ export function cn(...inputs: ClassValue[]) {
  * Luma calendar configuration
  */
 export const LUMA_CONFIG = {
-  calendarUrl: "https://lu.ma/ClaudeCommunityHelsinki",
-  embedUrl: "https://lu.ma/embed/calendar/cal-9FcoJqdJCGyefXC/events",
+  calendarUrl: "https://luma.com/ClaudeCodeHelsinki",
+  embedUrl: "https://luma.com/embed/calendar/cal-9FcoJqdJCGyefXC/events",
   calendarId: "cal-9FcoJqdJCGyefXC",
 };
 
