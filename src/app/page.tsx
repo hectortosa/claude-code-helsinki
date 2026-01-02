@@ -2,13 +2,14 @@ import Link from "next/link";
 import { Terminal } from "@/components/terminal/Terminal";
 import { AuroraBackground } from "@/components/aurora/AuroraBackground";
 import { LumaCalendar } from "@/components/luma/LumaCalendar";
+import { ForestDivider } from "@/components/forest/ForestDivider";
 
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
       <AuroraBackground intensity="subtle" className="wave-divider">
-        <section className="container mx-auto px-4 py-20 md:py-32">
+        <section className="container mx-auto px-4 py-20 md:py-32 pb-40">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-claude-coral/10 text-claude-coral text-sm font-medium mb-8">
@@ -43,6 +44,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <ForestDivider />
       </AuroraBackground>
 
       {/* Terminal Section */}
