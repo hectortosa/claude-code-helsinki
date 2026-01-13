@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 interface Snowflake {
   id: number;
   left: number;
@@ -21,9 +23,19 @@ function generateSnowflakes(count: number): Snowflake[] {
   }));
 }
 
-const snowflakes = generateSnowflakes(35);
-
 export function SnowParticles() {
+  const [snowflakes, setSnowflakes] = useState<Snowflake[]>([]);
+
+  useEffect(() => {
+    // Generate snowflakes only on client to avoid hydration mismatch
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSnowflakes(generateSnowflakes(35));
+  }, []);
+
+  if (snowflakes.length === 0) {
+    return null;
+  }
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none dark:hidden">
       {snowflakes.map((flake) => (
