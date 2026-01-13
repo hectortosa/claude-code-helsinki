@@ -1,31 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Claude Colors */
+  --color-claude-coral: #da7756;
+  --color-claude-coral-dark: #bd5d3a;
+  --color-claude-cream: #eeece2;
+  --color-claude-text: #3d3929;
+  --color-claude-dark: #131314;
+
+  /* Finnish Accents */
+  --color-finnish-blue: #003580;
+  --color-finnish-white: #ffffff;
+
+  /* Aurora Colors */
+  --color-aurora-green: #00ff87;
+  --color-aurora-cyan: #60efff;
+  --color-aurora-purple: #b967ff;
+
+  /* Terminal Colors */
+  --color-terminal-bg: #1a1a2e;
+  --color-terminal-green: #00ff41;
+  --color-terminal-text: #e0e0e0;
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Animations */
+  --animate-aurora: aurora 15s ease infinite;
+  --animate-terminal-blink: blink 1s step-end infinite;
+  --animate-fade-in: fadeIn 0.5s ease-out;
+  --animate-slide-up: slideUp 0.5s ease-out;
+}
 
 @layer base {
-  :root {
-    /* Claude Colors */
-    --claude-coral: 218 119 86;
-    --claude-coral-dark: 189 93 58;
-    --claude-cream: 238 236 226;
-    --claude-text: 61 57 41;
-    --claude-dark: 19 19 20;
-
-    /* Finnish Accents */
-    --finnish-blue: 0 53 128;
-    --finnish-white: 255 255 255;
-
-    /* Aurora Colors */
-    --aurora-green: 0 255 135;
-    --aurora-cyan: 96 239 255;
-    --aurora-purple: 185 103 255;
-
-    /* Terminal Colors */
-    --terminal-bg: 26 26 46;
-    --terminal-green: 0 255 65;
-    --terminal-text: 224 224 224;
-  }
-
   html {
     scroll-behavior: smooth;
   }
@@ -64,10 +73,10 @@
   .aurora-gradient {
     background: linear-gradient(
       -45deg,
-      rgb(var(--aurora-green) / 0.3),
-      rgb(var(--aurora-cyan) / 0.3),
-      rgb(var(--aurora-purple) / 0.3),
-      rgb(var(--finnish-blue) / 0.2)
+      oklch(from var(--color-aurora-green) l c h / 0.3),
+      oklch(from var(--color-aurora-cyan) l c h / 0.3),
+      oklch(from var(--color-aurora-purple) l c h / 0.3),
+      oklch(from var(--color-finnish-blue) l c h / 0.2)
     );
     background-size: 200% 200%;
     animation: aurora 15s ease infinite;
@@ -143,6 +152,16 @@
   50% {
     opacity: 0;
   }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes snowfall {
