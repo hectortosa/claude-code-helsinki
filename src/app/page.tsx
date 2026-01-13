@@ -14,7 +14,7 @@ export default function Home() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-claude-coral/10 text-claude-coral text-sm font-medium mb-8">
               <span className="w-2 h-2 rounded-full bg-claude-coral animate-pulse" />
-              Official Anthropic Community
+              Supported by Anthropic
             </div>
 
             {/* Heading */}
@@ -52,7 +52,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-claude-text dark:text-white mb-4">
-              Terminal
+              Terminal Mode
             </h2>
             <p className="text-claude-text/60 dark:text-white/60">
               Join the community the Claude Code way - type{" "}
