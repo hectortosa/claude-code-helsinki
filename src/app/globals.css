@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode (Tailwind 4 uses media query by default) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Claude Colors */
   --color-claude-coral: #da7756;
@@ -63,9 +66,9 @@
   .winter-sky {
     background: linear-gradient(
       180deg,
-      #e8eef2 0%,
-      #dde5eb 50%,
-      #d5dfe7 100%
+      #d8dde1 0%,
+      #c9d0d6 50%,
+      #bec7cf 100%
     );
   }
 

@@ -29,7 +29,7 @@ export function SnowParticles() {
   useEffect(() => {
     // Generate snowflakes only on client to avoid hydration mismatch
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSnowflakes(generateSnowflakes(35));
+    setSnowflakes(generateSnowflakes(60));
   }, []);
 
   if (snowflakes.length === 0) {
