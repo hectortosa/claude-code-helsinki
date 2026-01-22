@@ -23,7 +23,7 @@ export const LUMA_CONFIG = {
 export const SITE_CONFIG = {
   name: "Claude Code Helsinki",
   description:
-    "Connect. Build. Share. The official Anthropic community for creators, builders, and professionals in Helsinki.",
+    "Connect. Build. Share. An Anthropic-supported community for creators, builders, and professionals in Helsinki.",
   url: "https://claude-code-helsinki.codesharegrow.net",
   ogImage: "/og-image.png",
   links: {
