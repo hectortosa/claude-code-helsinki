@@ -19,6 +19,9 @@ export default function JoinPage() {
     name: "",
     email: "",
     github: "",
+    linkedin: "",
+    x: "",
+    mastodon: "",
     role: "",
     interests: "",
     newsletter: true,
@@ -40,6 +43,9 @@ export default function JoinPage() {
           name: formData.name,
           email: formData.email,
           github: formData.github || undefined,
+          linkedin: formData.linkedin || undefined,
+          x: formData.x || undefined,
+          mastodon: formData.mastodon || undefined,
           role: ROLE_OPTIONS[formData.role] || "Other",
           interests: formData.interests,
           newsletter: formData.newsletter,
@@ -171,25 +177,66 @@ export default function JoinPage() {
                 </p>
               </div>
 
-              {/* GitHub */}
-              <div className="mb-6">
-                <label
-                  htmlFor="github"
-                  className="block text-sm font-medium text-claude-text dark:text-white mb-2"
-                >
-                  GitHub Username (optional)
-                </label>
-                <input
-                  type="text"
-                  id="github"
-                  value={formData.github}
-                  onChange={(e) =>
-                    setFormData({ ...formData, github: e.target.value })
-                  }
-                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
-                  placeholder="your-github-username"
-                />
-              </div>
+              {/* Social Accounts */}
+              <fieldset className="mb-6">
+                <legend className="block text-sm font-medium text-claude-text dark:text-white mb-3">
+                  Social Accounts (optional)
+                </legend>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="github" className="sr-only">GitHub</label>
+                    <input
+                      type="text"
+                      id="github"
+                      value={formData.github}
+                      onChange={(e) =>
+                        setFormData({ ...formData, github: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
+                      placeholder="GitHub username"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="linkedin" className="sr-only">LinkedIn</label>
+                    <input
+                      type="text"
+                      id="linkedin"
+                      value={formData.linkedin}
+                      onChange={(e) =>
+                        setFormData({ ...formData, linkedin: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
+                      placeholder="LinkedIn username"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="x" className="sr-only">X (Twitter)</label>
+                    <input
+                      type="text"
+                      id="x"
+                      value={formData.x}
+                      onChange={(e) =>
+                        setFormData({ ...formData, x: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
+                      placeholder="X (Twitter) handle"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="mastodon" className="sr-only">Mastodon</label>
+                    <input
+                      type="text"
+                      id="mastodon"
+                      value={formData.mastodon}
+                      onChange={(e) =>
+                        setFormData({ ...formData, mastodon: e.target.value })
+                      }
+                      className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
+                      placeholder="Mastodon handle (@user@instance)"
+                    />
+                  </div>
+                </div>
+              </fieldset>
 
               {/* Role */}
               <div className="mb-6">

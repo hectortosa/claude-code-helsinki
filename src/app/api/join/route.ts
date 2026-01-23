@@ -8,6 +8,9 @@ interface JoinRequest {
   role: string;
   interests: string;
   github?: string;
+  linkedin?: string;
+  x?: string;
+  mastodon?: string;
   newsletter: boolean;
   status: "pending" | "approved" | "rejected" | "processed";
   createdAt: string;
@@ -30,7 +33,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate required fields
-    const { name, email, role, interests, github, newsletter } = body;
+    const { name, email, role, interests, github, linkedin, x, mastodon, newsletter } = body;
 
     if (!name || typeof name !== "string" || name.trim().length === 0) {
       return NextResponse.json(
@@ -63,6 +66,9 @@ export async function POST(request: NextRequest) {
       role: role.trim(),
       interests: interests?.trim() || "",
       github: github?.trim() || undefined,
+      linkedin: linkedin?.trim() || undefined,
+      x: x?.trim() || undefined,
+      mastodon: mastodon?.trim() || undefined,
       newsletter: newsletter === true,
       status: "pending",
       createdAt: now,

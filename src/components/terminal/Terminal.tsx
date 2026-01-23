@@ -14,6 +14,9 @@ type JoinStep =
   | "name"
   | "email"
   | "github"
+  | "linkedin"
+  | "x"
+  | "mastodon"
   | "role"
   | "interests"
   | "confirm"
@@ -23,6 +26,9 @@ interface JoinData {
   name: string;
   email: string;
   github: string;
+  linkedin: string;
+  x: string;
+  mastodon: string;
   role: string;
   interests: string;
 }
@@ -51,6 +57,9 @@ Type 'help' for available commands or 'join' to subscribe.`,
     name: "",
     email: "",
     github: "",
+    linkedin: "",
+    x: "",
+    mastodon: "",
     role: "",
     interests: "",
   });
@@ -79,6 +88,9 @@ Type 'help' for available commands or 'join' to subscribe.`,
           name: data.name,
           email: data.email,
           github: data.github || undefined,
+          linkedin: data.linkedin || undefined,
+          x: data.x || undefined,
+          mastodon: data.mastodon || undefined,
           role: ROLE_OPTIONS.find((r) => r.value === data.role)?.label || data.role,
           interests: data.interests,
           newsletter: true,
@@ -113,7 +125,7 @@ Please try again later.`
     }
 
     setJoinStep("idle");
-    setJoinData({ name: "", email: "", github: "", role: "", interests: "" });
+    setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
   };
 
   const handleJoinInput = (input: string) => {
@@ -127,7 +139,7 @@ Please try again later.`
       addLine("input", trimmed);
       addLine("output", "Join request cancelled.");
       setJoinStep("idle");
-      setJoinData({ name: "", email: "", github: "", role: "", interests: "" });
+      setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
       return;
     }
 
@@ -164,6 +176,39 @@ Please try again later.`
 
       case "github":
         setJoinData((prev) => ({ ...prev, github: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
+        addLine("output", `LinkedIn username (optional, press Enter to skip):`);
+        setJoinStep("linkedin");
+        break;
+
+      case "linkedin":
+        setJoinData((prev) => ({ ...prev, linkedin: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
+        addLine("output", `X (Twitter) handle (optional, press Enter to skip):`);
+        setJoinStep("x");
+        break;
+
+      case "x":
+        setJoinData((prev) => ({ ...prev, x: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
+        addLine("output", `Mastodon handle (optional, press Enter to skip):`);
+        setJoinStep("mastodon");
+        break;
+
+      case "mastodon":
+        setJoinData((prev) => ({ ...prev, mastodon: trimmed }));
         if (trimmed) {
           addLine("input", trimmed);
         } else {
@@ -222,9 +267,12 @@ Review your information:
 
   Name:      ${joinData.name}
   Email:     ${joinData.email}
-  GitHub:    ${joinData.github || "Not specified"}
+  GitHub:    ${joinData.github || "-"}
+  LinkedIn:  ${joinData.linkedin || "-"}
+  X:         ${joinData.x || "-"}
+  Mastodon:  ${joinData.mastodon || "-"}
   Role:      ${roleLabel}
-  Interests: ${trimmed || "Not specified"}
+  Interests: ${trimmed || "-"}
 
 Type 'yes' to submit or 'cancel' to abort:`
         );
@@ -245,7 +293,7 @@ Type 'yes' to submit or 'cancel' to abort:`
           addLine("input", trimmed);
           addLine("output", "Join request cancelled.");
           setJoinStep("idle");
-          setJoinData({ name: "", email: "", github: "", role: "", interests: "" });
+          setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
         } else {
           addLine("error", "Please type 'yes' to submit or 'cancel' to abort:");
         }
@@ -295,7 +343,7 @@ Enter your name:`
       case "clear":
         setLines([]);
         setJoinStep("idle");
-        setJoinData({ name: "", email: "", github: "", role: "", interests: "" });
+        setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
         break;
       case "theme":
         document.documentElement.classList.toggle("dark");
@@ -330,6 +378,12 @@ Enter your name:`
         return "email:";
       case "github":
         return "github:";
+      case "linkedin":
+        return "linkedin:";
+      case "x":
+        return "x:";
+      case "mastodon":
+        return "mastodon:";
       case "role":
         return "role:";
       case "interests":

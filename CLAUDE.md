@@ -73,7 +73,7 @@ Uses `@vercel/blob` for temporary storage of pending requests (URLs are public b
 3. **`/process-members` runs** (in claude-code-helsinki-members) → adds to `members.json`, sends welcome email, deletes blob
 4. **PII only persists** in private `members.json`
 
-Request fields: `id`, `name`, `email`, `github?`, `role`, `interests`, `newsletter`, `status`, `createdAt`, `updatedAt`
+Request fields: `id`, `name`, `email`, `github?`, `linkedin?`, `x?`, `mastodon?`, `role`, `interests`, `newsletter`, `status`, `createdAt`, `updatedAt`
 
 ## Git Workflow
 
