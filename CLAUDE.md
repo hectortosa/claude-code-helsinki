@@ -19,12 +19,12 @@ No test suite - verify changes with `npm run build` and manual browser testing.
 
 ## Tech Stack
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 16+ (App Router)
 - **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS with custom design tokens
+- **Styling**: Tailwind CSS 4 with custom design tokens
 - **Icons**: lucide-react
 - **Calendar**: Luma embed (https://luma.com/ClaudeCodeHelsinki)
-- **Signup**: GitHub Issues (terminal join flow opens pre-filled issue)
+- **Signup**: API-based with Vercel Blob storage (pending → approved → processed)
 
 ## Architecture
 
@@ -32,7 +32,9 @@ No test suite - verify changes with `npm run build` and manual browser testing.
 
 | Component | Purpose |
 |-----------|---------|
-| `src/components/terminal/Terminal.tsx` | Interactive CLI widget with `help`, `join`, `events`, `about`, `clear`, `theme` commands. Join flow collects user info and opens GitHub issue. |
+| `src/components/terminal/Terminal.tsx` | Interactive CLI widget with `help`, `join`, `events`, `about`, `clear`, `theme` commands. Join flow submits to `/api/join`. |
+| `src/app/join/page.tsx` | Form-based join page, also submits to `/api/join`. |
+| `src/app/api/join/route.ts` | POST endpoint for join requests. Validates input, checks for duplicates, stores as pending in Vercel Blob. |
 | `src/components/aurora/AuroraBackground.tsx` | Theme-aware hero background: aurora gradient (dark) or winter sky with snow (light) |
 | `src/components/snow/SnowParticles.tsx` | CSS-only falling snowflakes, visible only in light mode (`dark:hidden`) |
 | `src/components/forest/` | Pine tree forest divider SVG |
@@ -60,6 +62,18 @@ No test suite - verify changes with `npm run build` and manual browser testing.
 - `src/lib/utils.ts` - `cn()` utility, `NAV_ITEMS`, `LUMA_CONFIG`
 - `src/lib/constants.ts` - Terminal command responses
 - `src/app/globals.css` - Custom CSS classes (`.aurora-gradient`, `.winter-sky`, `.terminal`, `.btn-primary`)
+- `src/app/api/join/route.ts` - Join request API endpoint
+
+## Join Request Flow
+
+Uses `@vercel/blob` for temporary storage of pending requests (URLs are public but unguessable).
+
+1. **User submits** via terminal → stored in Blob as `join-requests/{id}.json` with status `pending`
+2. **Admin approves** via curl → changes status to `approved`
+3. **`/process-members` runs** (in claude-code-helsinki-members) → adds to `members.json`, sends welcome email, deletes blob
+4. **PII only persists** in private `members.json`
+
+Request fields: `id`, `name`, `email`, `github?`, `role`, `interests`, `newsletter`, `status`, `createdAt`, `updatedAt`
 
 ## Git Workflow
 
@@ -89,4 +103,6 @@ import { cn } from "@/lib/utils";
 
 ## Environment Variables
 
-Copy `.env.example` to `.env.local`. Required for forms/newsletter (optional for basic development).
+Copy `.env.example` to `.env.local`:
+
+- `BLOB_READ_WRITE_TOKEN` - Required for join API (Vercel Blob storage)

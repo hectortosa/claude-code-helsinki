@@ -4,54 +4,60 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { AuroraBackground } from "@/components/aurora/AuroraBackground";
 
-// GitHub repo where issues will be created
-const GITHUB_REPO = "hectortosa/claude-community-helsinki-website";
+const ROLE_OPTIONS: Record<string, string> = {
+  developer: "Software Developer",
+  designer: "Designer",
+  product: "Product Manager",
+  founder: "Founder / Entrepreneur",
+  student: "Student",
+  researcher: "Researcher",
+  other: "Other",
+};
 
 export default function JoinPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    github: "",
     role: "",
     interests: "",
     newsletter: true,
     guidelines: false,
   });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
 
-    // Build the GitHub issue URL with pre-filled values
-    const issueTitle = `Join Request: ${formData.name}`;
+    try {
+      const response = await fetch("/api/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          github: formData.github || undefined,
+          role: ROLE_OPTIONS[formData.role] || "Other",
+          interests: formData.interests,
+          newsletter: formData.newsletter,
+        }),
+      });
 
-    // Map role to match dropdown options in issue template
-    const roleMap: Record<string, string> = {
-      developer: "Software Developer",
-      designer: "Designer",
-      product: "Product Manager",
-      founder: "Founder / Entrepreneur",
-      student: "Student",
-      researcher: "Researcher",
-      other: "Other",
-    };
+      const result = await response.json();
 
-    // Build query params for issue template
-    const params = new URLSearchParams({
-      template: "join.yml",
-      title: issueTitle,
-      name: formData.name,
-      email: formData.email,
-      role: roleMap[formData.role] || "Other",
-      interests: formData.interests,
-      "newsletter[]": formData.newsletter
-        ? "I want to receive email updates about upcoming events and community news"
-        : "",
-      "guidelines[]":
-        "I have read and agree to follow the [community guidelines](https://claude-community-helsinki.codesharegrow.net/guidelines)",
-    });
-
-    // Redirect to GitHub issue creation
-    const githubUrl = `https://github.com/${GITHUB_REPO}/issues/new?${params.toString()}`;
-    window.open(githubUrl, "_blank");
+      if (response.ok) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+        setErrorMessage(result.error || "Failed to submit request. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please check your connection and try again.");
+    }
   };
 
   const isFormValid =
@@ -73,30 +79,47 @@ export default function JoinPage() {
               </p>
             </div>
 
-            {/* Info Box */}
-            <div className="bg-white dark:bg-terminal-bg border border-claude-text/5 dark:border-white/10 p-6 rounded-xl mb-8 shadow-sm">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-claude-coral/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-5 h-5 text-claude-coral"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-claude-text dark:text-white mb-1">
-                    Join via GitHub
-                  </h3>
-                  <p className="text-sm text-claude-text/60 dark:text-white/60">
-                    We use GitHub Issues to manage community requests. Fill out
-                    the form below and you&apos;ll be redirected to GitHub to
-                    submit your request. A GitHub account is required.
-                  </p>
+            {/* Success Message */}
+            {status === "success" && (
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-6 rounded-xl mb-8">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-green-800 dark:text-green-200 mb-1">
+                      Request Submitted
+                    </h3>
+                    <p className="text-sm text-green-700 dark:text-green-300">
+                      Your request is now pending review. You&apos;ll receive a welcome email once approved. Thank you for joining Claude Code Helsinki!
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Error Message */}
+            {status === "error" && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-6 rounded-xl mb-8">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-red-100 dark:bg-red-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-red-800 dark:text-red-200 mb-1">
+                      Submission Failed
+                    </h3>
+                    <p className="text-sm text-red-700 dark:text-red-300">
+                      {errorMessage}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Form */}
             <form
@@ -146,6 +169,26 @@ export default function JoinPage() {
                 <p className="mt-1 text-xs text-claude-text/50 dark:text-white/50">
                   Your email will only be visible to community organizers
                 </p>
+              </div>
+
+              {/* GitHub */}
+              <div className="mb-6">
+                <label
+                  htmlFor="github"
+                  className="block text-sm font-medium text-claude-text dark:text-white mb-2"
+                >
+                  GitHub Username (optional)
+                </label>
+                <input
+                  type="text"
+                  id="github"
+                  value={formData.github}
+                  onChange={(e) =>
+                    setFormData({ ...formData, github: e.target.value })
+                  }
+                  className="w-full px-4 py-3 rounded-lg border border-claude-text/20 dark:border-white/20 bg-white dark:bg-claude-dark focus:border-claude-coral focus:ring-2 focus:ring-claude-coral/20 outline-none transition-colors text-claude-text dark:text-white"
+                  placeholder="your-github-username"
+                />
               </div>
 
               {/* Role */}
@@ -243,38 +286,24 @@ export default function JoinPage() {
               {/* Submit */}
               <button
                 type="submit"
-                disabled={!isFormValid}
+                disabled={!isFormValid || status === "submitting" || status === "success"}
                 className="w-full btn-primary text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-                Continue to GitHub
+                {status === "submitting" ? (
+                  <>
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Submitting...
+                  </>
+                ) : status === "success" ? (
+                  "Submitted"
+                ) : (
+                  "Submit Request"
+                )}
               </button>
-
-              <p className="mt-4 text-center text-sm text-claude-text/50 dark:text-white/50">
-                You&apos;ll be redirected to GitHub to submit your join request
-              </p>
             </form>
-
-            {/* Direct Link */}
-            <div className="mt-8 text-center">
-              <p className="text-claude-text/60 dark:text-white/60 text-sm mb-2">
-                Or go directly to GitHub:
-              </p>
-              <a
-                href={`https://github.com/${GITHUB_REPO}/issues/new?template=join.yml`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-claude-coral hover:text-claude-coral-dark font-medium"
-              >
-                Open join request template →
-              </a>
-            </div>
           </div>
         </section>
       </AuroraBackground>
