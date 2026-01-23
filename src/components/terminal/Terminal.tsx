@@ -4,19 +4,31 @@ import { useState, useRef, useEffect, KeyboardEvent } from "react";
 import { cn } from "@/lib/utils";
 import { TERMINAL_COMMANDS } from "@/lib/constants";
 
-// GitHub repo where issues will be created
-const GITHUB_REPO = "hectortosa/claude-community-helsinki-website";
-
 interface TerminalLine {
   type: "input" | "output" | "error" | "success";
   content: string;
 }
 
-type JoinStep = "idle" | "name" | "email" | "role" | "interests" | "confirm";
+type JoinStep =
+  | "idle"
+  | "name"
+  | "email"
+  | "github"
+  | "linkedin"
+  | "x"
+  | "mastodon"
+  | "role"
+  | "interests"
+  | "confirm"
+  | "submitting";
 
 interface JoinData {
   name: string;
   email: string;
+  github: string;
+  linkedin: string;
+  x: string;
+  mastodon: string;
   role: string;
   interests: string;
 }
@@ -44,6 +56,10 @@ Type 'help' for available commands or 'join' to subscribe.`,
   const [joinData, setJoinData] = useState<JoinData>({
     name: "",
     email: "",
+    github: "",
+    linkedin: "",
+    x: "",
+    mastodon: "",
     role: "",
     interests: "",
   });
@@ -60,37 +76,75 @@ Type 'help' for available commands or 'join' to subscribe.`,
     setLines((prev) => [...prev, { type, content }]);
   };
 
-  const openGitHubIssue = (data: JoinData) => {
-    const roleLabel =
-      ROLE_OPTIONS.find((r) => r.value === data.role)?.label || "Other";
-    const issueTitle = `Join Request: ${data.name}`;
+  const submitJoinRequest = async (data: JoinData) => {
+    setJoinStep("submitting");
+    addLine("output", "Submitting your request...");
 
-    const params = new URLSearchParams({
-      template: "join.yml",
-      title: issueTitle,
-      name: data.name,
-      email: data.email,
-      role: roleLabel,
-      interests: data.interests || "Not specified",
-      "newsletter[]":
-        "I want to receive email updates about upcoming events and community news",
-      "guidelines[]":
-        "I have read and agree to follow the [community guidelines](https://claude-code-helsinki.codesharegrow.net/guidelines)",
-    });
+    try {
+      const response = await fetch("/api/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          github: data.github || undefined,
+          linkedin: data.linkedin || undefined,
+          x: data.x || undefined,
+          mastodon: data.mastodon || undefined,
+          role: ROLE_OPTIONS.find((r) => r.value === data.role)?.label || data.role,
+          interests: data.interests,
+          newsletter: true,
+        }),
+      });
 
-    const githubUrl = `https://github.com/${GITHUB_REPO}/issues/new?${params.toString()}`;
-    window.open(githubUrl, "_blank");
+      const result = await response.json();
+
+      if (response.ok) {
+        addLine(
+          "success",
+          `Request submitted successfully.
+
+Your request is now pending review. You'll receive a
+welcome email once approved.
+
+Thank you for joining Claude Code Helsinki!`
+        );
+      } else {
+        addLine(
+          "error",
+          `Failed to submit request: ${result.error || "Unknown error"}
+Please try again later.`
+        );
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      addLine(
+        "error",
+        `Network error. Please check your connection and try again.`
+      );
+    }
+
+    setJoinStep("idle");
+    setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
   };
 
   const handleJoinInput = (input: string) => {
     const trimmed = input.trim();
 
-    // Allow canceling at any step
-    if (trimmed.toLowerCase() === "cancel" || trimmed.toLowerCase() === "exit") {
+    // Allow canceling at any step (except submitting)
+    if (
+      joinStep !== "submitting" &&
+      (trimmed.toLowerCase() === "cancel" || trimmed.toLowerCase() === "exit")
+    ) {
       addLine("input", trimmed);
       addLine("output", "Join request cancelled.");
       setJoinStep("idle");
-      setJoinData({ name: "", email: "", role: "", interests: "" });
+      setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
+      return;
+    }
+
+    // Ignore input during submission
+    if (joinStep === "submitting") {
       return;
     }
 
@@ -113,6 +167,53 @@ Type 'help' for available commands or 'join' to subscribe.`,
         }
         setJoinData((prev) => ({ ...prev, email: trimmed }));
         addLine("input", trimmed);
+        addLine(
+          "output",
+          `GitHub username (optional, press Enter to skip):`
+        );
+        setJoinStep("github");
+        break;
+
+      case "github":
+        setJoinData((prev) => ({ ...prev, github: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
+        addLine("output", `LinkedIn username (optional, press Enter to skip):`);
+        setJoinStep("linkedin");
+        break;
+
+      case "linkedin":
+        setJoinData((prev) => ({ ...prev, linkedin: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
+        addLine("output", `X (Twitter) handle (optional, press Enter to skip):`);
+        setJoinStep("x");
+        break;
+
+      case "x":
+        setJoinData((prev) => ({ ...prev, x: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
+        addLine("output", `Mastodon handle (optional, press Enter to skip):`);
+        setJoinStep("mastodon");
+        break;
+
+      case "mastodon":
+        setJoinData((prev) => ({ ...prev, mastodon: trimmed }));
+        if (trimmed) {
+          addLine("input", trimmed);
+        } else {
+          addLine("input", "(skipped)");
+        }
         addLine(
           "output",
           `What best describes you?
@@ -147,8 +248,9 @@ Examples: AI-assisted coding, prompt engineering, Claude API...`
         break;
       }
 
-      case "interests":
-        setJoinData((prev) => ({ ...prev, interests: trimmed }));
+      case "interests": {
+        const updatedData = { ...joinData, interests: trimmed };
+        setJoinData(updatedData);
         if (trimmed) {
           addLine("input", trimmed);
         } else {
@@ -157,9 +259,7 @@ Examples: AI-assisted coding, prompt engineering, Claude API...`
 
         // Show confirmation
         const roleLabel =
-          ROLE_OPTIONS.find(
-            (r) => r.value === (trimmed ? joinData.role : joinData.role)
-          )?.label || "Other";
+          ROLE_OPTIONS.find((r) => r.value === joinData.role)?.label || "Other";
         addLine(
           "output",
           `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -167,23 +267,24 @@ Review your information:
 
   Name:      ${joinData.name}
   Email:     ${joinData.email}
+  GitHub:    ${joinData.github || "-"}
+  LinkedIn:  ${joinData.linkedin || "-"}
+  X:         ${joinData.x || "-"}
+  Mastodon:  ${joinData.mastodon || "-"}
   Role:      ${roleLabel}
-  Interests: ${trimmed || "Not specified"}
+  Interests: ${trimmed || "-"}
 
-This will open GitHub to submit your join request.
-Type 'yes' to continue or 'cancel' to abort:`
+Type 'yes' to submit or 'cancel' to abort:`
         );
         setJoinStep("confirm");
         break;
+      }
 
       case "confirm":
         if (trimmed.toLowerCase() === "yes" || trimmed.toLowerCase() === "y") {
           addLine("input", trimmed);
-          addLine("success", "✓ Opening GitHub...");
-          const finalData = { ...joinData, interests: joinData.interests };
-          openGitHubIssue(finalData);
-          setJoinStep("idle");
-          setJoinData({ name: "", email: "", role: "", interests: "" });
+          const finalData = { ...joinData };
+          submitJoinRequest(finalData);
         } else if (
           trimmed.toLowerCase() === "cancel" ||
           trimmed.toLowerCase() === "no" ||
@@ -192,9 +293,9 @@ Type 'yes' to continue or 'cancel' to abort:`
           addLine("input", trimmed);
           addLine("output", "Join request cancelled.");
           setJoinStep("idle");
-          setJoinData({ name: "", email: "", role: "", interests: "" });
+          setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
         } else {
-          addLine("error", "Please type 'yes' to continue or 'cancel' to abort:");
+          addLine("error", "Please type 'yes' to submit or 'cancel' to abort:");
         }
         break;
     }
@@ -242,11 +343,11 @@ Enter your name:`
       case "clear":
         setLines([]);
         setJoinStep("idle");
-        setJoinData({ name: "", email: "", role: "", interests: "" });
+        setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
         break;
       case "theme":
         document.documentElement.classList.toggle("dark");
-        addLine("success", "✓ Theme toggled");
+        addLine("success", "Theme toggled");
         break;
       case "":
         break;
@@ -275,12 +376,22 @@ Enter your name:`
         return "name:";
       case "email":
         return "email:";
+      case "github":
+        return "github:";
+      case "linkedin":
+        return "linkedin:";
+      case "x":
+        return "x:";
+      case "mastodon":
+        return "mastodon:";
       case "role":
         return "role:";
       case "interests":
         return "interests:";
       case "confirm":
         return "confirm:";
+      case "submitting":
+        return "...";
       default:
         return "$";
     }
@@ -335,6 +446,7 @@ Enter your name:`
             className="flex-1 bg-transparent outline-none text-terminal-text caret-terminal-green"
             spellCheck={false}
             autoComplete={joinStep === "email" ? "email" : "off"}
+            disabled={joinStep === "submitting"}
           />
           <span className="terminal-cursor" />
         </div>
