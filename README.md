@@ -1,6 +1,6 @@
 # Claude Code Community Helsinki 🇫🇮
 
-[![Anthropic Official](https://img.shields.io/badge/Anthropic-Official%20Community-da7756?style=for-the-badge&logo=anthropic)](https://anthropic.com)
+[![Anthropic Supported](https://img.shields.io/badge/Anthropic-Official%20Community-da7756?style=for-the-badge&logo=anthropic)](https://anthropic.com)
 [![Built with Next.js](https://img.shields.io/badge/Next.js-14+-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178c6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
 [![Deployed on Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel)](https://vercel.com)
