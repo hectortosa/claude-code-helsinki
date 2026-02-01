@@ -11,10 +11,9 @@ export function Header() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Check for saved theme or system preference
+    // Check for saved theme, default to dark (aurora)
     const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const shouldBeDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+    const shouldBeDark = savedTheme !== "light";
 
     // Sync state and DOM - legitimate initialization pattern
     // eslint-disable-next-line react-hooks/set-state-in-effect
