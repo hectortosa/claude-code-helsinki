@@ -19,6 +19,7 @@ type JoinStep =
   | "mastodon"
   | "role"
   | "interests"
+  | "emailCommunications"
   | "confirm"
   | "submitting";
 
@@ -31,6 +32,7 @@ interface JoinData {
   mastodon: string;
   role: string;
   interests: string;
+  emailCommunications: boolean;
 }
 
 const ROLE_OPTIONS = [
@@ -62,6 +64,7 @@ Type 'help' for available commands or 'join' to subscribe.`,
     mastodon: "",
     role: "",
     interests: "",
+    emailCommunications: true,
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -93,7 +96,7 @@ Type 'help' for available commands or 'join' to subscribe.`,
           mastodon: data.mastodon || undefined,
           role: ROLE_OPTIONS.find((r) => r.value === data.role)?.label || data.role,
           interests: data.interests,
-          newsletter: true,
+          emailCommunications: data.emailCommunications,
         }),
       });
 
@@ -125,7 +128,7 @@ Please try again later.`
     }
 
     setJoinStep("idle");
-    setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
+    setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "", emailCommunications: true });
   };
 
   const handleJoinInput = (input: string) => {
@@ -139,7 +142,7 @@ Please try again later.`
       addLine("input", trimmed);
       addLine("output", "Join request cancelled.");
       setJoinStep("idle");
-      setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
+      setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "", emailCommunications: true });
       return;
     }
 
@@ -249,13 +252,30 @@ Examples: AI-assisted coding, prompt engineering, Claude API...`
       }
 
       case "interests": {
-        const updatedData = { ...joinData, interests: trimmed };
-        setJoinData(updatedData);
+        setJoinData((prev) => ({ ...prev, interests: trimmed }));
         if (trimmed) {
           addLine("input", trimmed);
         } else {
           addLine("input", "(skipped)");
         }
+        addLine(
+          "output",
+          `Receive email updates about upcoming events and
+community news? (yes/no):`
+        );
+        setJoinStep("emailCommunications");
+        break;
+      }
+
+      case "emailCommunications": {
+        const answer = trimmed.toLowerCase();
+        if (answer !== "yes" && answer !== "y" && answer !== "no" && answer !== "n") {
+          addLine("error", "Please type 'yes' or 'no':");
+          return;
+        }
+        const optIn = answer === "yes" || answer === "y";
+        setJoinData((prev) => ({ ...prev, emailCommunications: optIn }));
+        addLine("input", optIn ? "yes" : "no");
 
         // Show confirmation
         const roleLabel =
@@ -272,7 +292,8 @@ Review your information:
   X:         ${joinData.x || "-"}
   Mastodon:  ${joinData.mastodon || "-"}
   Role:      ${roleLabel}
-  Interests: ${trimmed || "-"}
+  Interests: ${joinData.interests || "-"}
+  Email updates: ${optIn ? "yes" : "no"}
 
 Type 'yes' to submit or 'cancel' to abort:`
         );
@@ -293,7 +314,7 @@ Type 'yes' to submit or 'cancel' to abort:`
           addLine("input", trimmed);
           addLine("output", "Join request cancelled.");
           setJoinStep("idle");
-          setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
+          setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "", emailCommunications: true });
         } else {
           addLine("error", "Please type 'yes' to submit or 'cancel' to abort:");
         }
@@ -343,7 +364,7 @@ Enter your name:`
       case "clear":
         setLines([]);
         setJoinStep("idle");
-        setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "" });
+        setJoinData({ name: "", email: "", github: "", linkedin: "", x: "", mastodon: "", role: "", interests: "", emailCommunications: true });
         break;
       case "theme":
         document.documentElement.classList.toggle("dark");
@@ -388,6 +409,8 @@ Enter your name:`
         return "role:";
       case "interests":
         return "interests:";
+      case "emailCommunications":
+        return "email-updates:";
       case "confirm":
         return "confirm:";
       case "submitting":

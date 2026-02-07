@@ -11,7 +11,7 @@ interface JoinRequest {
   linkedin?: string;
   x?: string;
   mastodon?: string;
-  newsletter: boolean;
+  emailCommunications: boolean;
   status: "pending" | "approved" | "rejected" | "processed";
   createdAt: string;
   updatedAt: string;
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate required fields
-    const { name, email, role, interests, github, linkedin, x, mastodon, newsletter } = body;
+    const { name, email, role, interests, github, linkedin, x, mastodon, emailCommunications } = body;
 
     if (!name || typeof name !== "string" || name.trim().length === 0) {
       return NextResponse.json(
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       linkedin: linkedin?.trim() || undefined,
       x: x?.trim() || undefined,
       mastodon: mastodon?.trim() || undefined,
-      newsletter: newsletter === true,
+      emailCommunications: emailCommunications === true,
       status: "pending",
       createdAt: now,
       updatedAt: now,

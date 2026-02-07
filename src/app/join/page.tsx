@@ -24,7 +24,7 @@ export default function JoinPage() {
     mastodon: "",
     role: "",
     interests: "",
-    newsletter: true,
+    emailCommunications: true,
     guidelines: false,
   });
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -48,7 +48,7 @@ export default function JoinPage() {
           mastodon: formData.mastodon || undefined,
           role: ROLE_OPTIONS[formData.role] || "Other",
           interests: formData.interests,
-          newsletter: formData.newsletter,
+          emailCommunications: formData.emailCommunications,
         }),
       });
 
@@ -291,9 +291,9 @@ export default function JoinPage() {
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={formData.newsletter}
+                    checked={formData.emailCommunications}
                     onChange={(e) =>
-                      setFormData({ ...formData, newsletter: e.target.checked })
+                      setFormData({ ...formData, emailCommunications: e.target.checked })
                     }
                     className="mt-1 w-5 h-5 rounded border-claude-text/20 text-claude-coral focus:ring-claude-coral"
                   />
