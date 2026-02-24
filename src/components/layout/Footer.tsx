@@ -67,6 +67,14 @@ export function Footer() {
                   Guidelines
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-claude-text/70 dark:text-white/70 hover:text-claude-coral transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
