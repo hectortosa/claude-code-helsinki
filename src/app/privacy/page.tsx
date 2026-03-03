@@ -45,13 +45,13 @@ export default function PrivacyPolicyPage() {
             <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
               Claude Code Helsinki is an Anthropic-supported community group. For
               questions about your personal data or this privacy policy, contact
-              us through the{" "}
-              <Link
-                href="/join"
+              us at{" "}
+              <a
+                href="mailto:claude-code-helsinki@codesharegrow.net"
                 className="text-claude-coral hover:text-claude-coral-dark"
               >
-                contact form
-              </Link>{" "}
+                claude-code-helsinki@codesharegrow.net
+              </a>{" "}
               or speak directly with an organizer at events.
             </p>
           </div>
@@ -314,15 +314,15 @@ export default function PrivacyPolicyPage() {
               </li>
             </ul>
             <p className="text-claude-text/70 dark:text-white/70 leading-relaxed mt-4">
-              To exercise any of these rights, contact the community organizers
-              through the{" "}
-              <Link
-                href="/join"
+              To exercise any of these rights, email us at{" "}
+              <a
+                href="mailto:claude-code-helsinki@codesharegrow.net"
                 className="text-claude-coral hover:text-claude-coral-dark"
               >
-                contact form
-              </Link>{" "}
-              or at an event. We will respond to your request within 30 days.
+                claude-code-helsinki@codesharegrow.net
+              </a>{" "}
+              or speak with an organizer at an event. We will respond to your
+              request within 30 days.
             </p>
           </div>
 

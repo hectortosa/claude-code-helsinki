@@ -338,13 +338,13 @@ export default function GuidelinesPage() {
             concerns fairly and help everyone learn and grow.
           </p>
           <p className="text-claude-text/70 dark:text-white/70 leading-relaxed">
-            Contact us through the{" "}
-            <Link
-              href="/join"
+            Contact us at{" "}
+            <a
+              href="mailto:claude-code-helsinki@codesharegrow.net"
               className="text-claude-coral hover:text-claude-coral-dark"
             >
-              contact form
-            </Link>{" "}
+              claude-code-helsinki@codesharegrow.net
+            </a>{" "}
             or speak directly with an organizer at events.
           </p>
         </div>
