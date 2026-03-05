@@ -9,17 +9,33 @@ interface PresentationProps {
   slides: ReactNode[];
 }
 
+function getInitialSlide(): number {
+  if (typeof window === "undefined") return 0;
+  const hash = window.location.hash.replace("#", "");
+  const n = parseInt(hash, 10);
+  return isNaN(n) || n < 1 ? 0 : n - 1;
+}
+
 export function Presentation({ slides }: PresentationProps) {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(getInitialSlide);
   const total = slides.length;
 
+  const goTo = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(index, total - 1));
+      setCurrent(clamped);
+      window.history.replaceState(null, "", `#${clamped + 1}`);
+    },
+    [total]
+  );
+
   const next = useCallback(() => {
-    setCurrent((c) => Math.min(c + 1, total - 1));
-  }, [total]);
+    goTo(current + 1);
+  }, [current, goTo]);
 
   const prev = useCallback(() => {
-    setCurrent((c) => Math.max(c - 1, 0));
-  }, []);
+    goTo(current - 1);
+  }, [current, goTo]);
 
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
@@ -91,7 +107,7 @@ export function Presentation({ slides }: PresentationProps) {
         {slides.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrent(i)}
+            onClick={() => goTo(i)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
               i === current
                 ? "bg-claude-coral w-6"
