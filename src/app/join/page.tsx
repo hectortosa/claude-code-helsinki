@@ -325,6 +325,14 @@ export default function JoinPage() {
                     >
                       community guidelines
                     </Link>{" "}
+                    and acknowledge the{" "}
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      className="text-claude-coral hover:text-claude-coral-dark underline"
+                    >
+                      privacy policy
+                    </Link>{" "}
                     *
                   </span>
                 </label>
