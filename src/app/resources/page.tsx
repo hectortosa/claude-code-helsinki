@@ -1,11 +1,43 @@
 import Link from "next/link";
 import { LUMA_CONFIG, SITE_CONFIG } from "@/lib/utils";
+import { Presentation, Users, ExternalLink, Linkedin } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Resources",
   description: "Videos, presentations, and resources from Claude Code Helsinki",
 };
+
+const MEETUP_PRESENTATIONS = [
+  {
+    date: "March 5, 2026",
+    title: "Meetup #2",
+    slidesUrl: "/slides/20260305",
+    speakers: [
+      {
+        name: "Vijay Kodam",
+        role: "Principal Engineer, Nokia",
+        talk: "skill-up: How to Make Claude Work Your Way",
+        slidesUrl: "/presentations/20260305/skill-up-presentation.pdf",
+        linkedin: "https://www.linkedin.com/in/vijaykodam/",
+      },
+      {
+        name: "Luke Otwell",
+        role: "Software Engineer, Softlandia",
+        talk: "OpenClaw vs. Claude Code: The Wrong Tool for the Right Job",
+        slidesUrl: "/presentations/20260305/claw-vs-claude.pdf",
+        linkedin: "https://www.linkedin.com/in/luke-otwell/",
+      },
+      {
+        name: "Arsalan Shakil",
+        role: "AI Research Engineer, F-Secure",
+        talk: "Solving Context Rot: Spec-Driven Development with GSD",
+        slidesUrl: "/presentations/20260305/solving-context-rot-gsd.html",
+        linkedin: "https://www.linkedin.com/in/arsalan-shakil/",
+      },
+    ],
+  },
+];
 
 export default function ResourcesPage() {
   return (
@@ -19,30 +51,84 @@ export default function ResourcesPage() {
           </p>
         </div>
 
-        {/* Coming Soon */}
-        <div className="bg-white dark:bg-terminal-bg p-12 rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 text-center mb-12">
-          <div className="w-20 h-20 bg-claude-coral/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-10 h-10 text-claude-coral"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-              />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-4">
-            Coming Soon
+        {/* Meetup Presentations */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-claude-text dark:text-white mb-8 flex items-center gap-3">
+            <Presentation className="w-6 h-6 text-claude-coral" />
+            Presentations
           </h2>
-          <p className="text-claude-text/60 dark:text-white/60 max-w-lg mx-auto">
-            We&apos;re working on adding videos, presentations, and
-            transcriptions from our past community meetups. Check back soon!
-          </p>
+          <div className="space-y-6">
+            {MEETUP_PRESENTATIONS.map((meetup) => (
+              <div
+                key={meetup.date}
+                className="bg-white dark:bg-terminal-bg rounded-xl shadow-sm border border-claude-text/5 dark:border-white/10 overflow-hidden"
+              >
+                {/* Meetup header */}
+                <div className="px-6 py-5 border-b border-claude-text/5 dark:border-white/10 flex items-center justify-between flex-wrap gap-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-claude-text dark:text-white">
+                      {meetup.title}
+                    </h3>
+                    <p className="text-sm text-claude-text/50 dark:text-white/50 font-mono mt-1">
+                      {meetup.date}
+                    </p>
+                  </div>
+                  <Link
+                    href={meetup.slidesUrl}
+                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-claude-coral border border-claude-coral/30 rounded-lg hover:bg-claude-coral hover:text-white transition-colors"
+                  >
+                    <Presentation className="w-4 h-4" />
+                    View slides
+                  </Link>
+                </div>
+
+                {/* Speaker talks */}
+                <div className="divide-y divide-claude-text/5 dark:divide-white/5">
+                  {meetup.speakers.map((speaker) => (
+                    <div
+                      key={speaker.name}
+                      className="px-6 py-4 flex items-start justify-between gap-4 group"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-claude-text dark:text-white font-medium">
+                          {speaker.talk}
+                        </p>
+                        <p className="text-sm text-claude-text/50 dark:text-white/50 mt-1 flex items-center gap-1.5">
+                          {speaker.linkedin ? (
+                            <a
+                              href={speaker.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 hover:text-[#0A66C2] transition-colors"
+                            >
+                              <Linkedin className="w-3 h-3 shrink-0" />
+                              {speaker.name}
+                            </a>
+                          ) : (
+                            <span>{speaker.name}</span>
+                          )}
+                          <span className="text-claude-text/30 dark:text-white/30">
+                            &mdash; {speaker.role}
+                          </span>
+                        </p>
+                      </div>
+                      {speaker.slidesUrl && (
+                        <a
+                          href={speaker.slidesUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0 text-claude-text/30 dark:text-white/30 hover:text-claude-coral transition-colors mt-1"
+                          title={`Download ${speaker.name}'s slides`}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Quick Links */}
@@ -182,7 +268,7 @@ export default function ResourcesPage() {
             Want to contribute a presentation or demo?
           </p>
           <Link href="/join" className="btn-secondary">
-            Get in Touch
+            Join the Community
           </Link>
         </div>
       </div>
