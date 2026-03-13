@@ -2,32 +2,29 @@
 
 import { Presentation } from "@/components/slides/Presentation";
 import { Slide } from "@/components/slides/Slide";
-import { Globe, MessageCircle, Users, Calendar, Trophy, Cpu, Terminal, Rocket, Mic, ExternalLink, TerminalSquare, Paintbrush, FileText, Puzzle, Layers, TrendingUp, Wrench } from "lucide-react";
+import { Globe, MessageCircle, Users, Calendar, Trophy, Cpu, Terminal, Rocket, Mic, ExternalLink, TerminalSquare, Paintbrush, FileText, Puzzle, Layers, TrendingUp, Wrench, Download } from "lucide-react";
 
 const speakers = [
-  {
-    name: "Aapo Tanskanen",
-    title: "Developing Your Own Meeting Assistant with Claude Code",
-    bio: "CTO & Co-founder at Renessai, Founder of Lingoes.ai",
-    image: "/speakers/aapo-tanskanen.jpg",
-  },
   {
     name: "Vijay Kodam",
     title: "skill-up: How to Make Claude Work Your Way",
     bio: "Principal Engineer at Nokia",
     image: "/speakers/vijay-kodam.jpg",
+    slides: "/presentations/20260305/skill-up-presentation.pdf",
   },
   {
     name: "Luke Otwell",
     title: "OpenClaw vs. Claude Code: The Wrong Tool for the Right Job",
     bio: "Software Engineer - Applied AI at Softlandia",
     image: "/speakers/luke-otwell.jpg",
+    slides: "/presentations/20260305/claw-vs-claude.pdf",
   },
   {
     name: "Arsalan Shakil",
     title: "Solving Context Rot: Spec-Driven Development with GSD",
     bio: "AI Research Engineer at F-Secure",
     image: "/speakers/arsalan-shakil.jpg",
+    slides: "/presentations/20260305/solving-context-rot-gsd.html",
   },
 ];
 
@@ -125,8 +122,8 @@ export default function Meetup20260305() {
           {[
             { label: "Members", value: "68" },
             { label: "Meetups", value: "2" },
-            { label: "Talks given", value: "8" },
-            { label: "Speakers tonight", value: "4" },
+            { label: "Talks given", value: "7" },
+            { label: "Speakers tonight", value: "3" },
           ].map((stat) => (
             <div key={stat.label} className="bg-white/5 rounded-xl p-6 border border-white/10">
               <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
@@ -697,6 +694,17 @@ export default function Meetup20260305() {
           <p className="text-xl md:text-2xl text-aurora-cyan font-light leading-relaxed">
             {speaker.title}
           </p>
+          {speaker.slides && (
+            <a
+              href={speaker.slides}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 text-white/70 hover:text-white transition-colors text-sm font-medium"
+            >
+              <Download className="w-4 h-4" />
+              View slides
+            </a>
+          )}
         </div>
       </Slide>
     )),
