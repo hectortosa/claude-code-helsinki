@@ -36,7 +36,7 @@ export function PetalParticles() {
 
   return (
     <div
-      className="absolute inset-0 overflow-hidden pointer-events-none [--petal-color:#fff5dc] [--petal-glow:rgba(255,232,196,0.6)] dark:[--petal-color:#ffd49a] dark:[--petal-glow:rgba(255,196,140,0.7)]"
+      className="absolute inset-x-0 top-1/2 bottom-16 dark:top-[72%] dark:bottom-12 overflow-hidden pointer-events-none [--petal-color:#fff5dc] [--petal-glow:rgba(255,232,196,0.6)] dark:[--petal-color:#ffd49a] dark:[--petal-glow:rgba(255,196,140,0.7)]"
     >
       {petals.map((petal) => (
         <div
