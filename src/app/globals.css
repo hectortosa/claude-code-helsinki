@@ -195,8 +195,37 @@
   }
 }
 
+@keyframes fireflyHover {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0.25;
+  }
+  20% {
+    transform: translate(7px, -4px);
+    opacity: 0.95;
+  }
+  45% {
+    transform: translate(-4px, 5px);
+    opacity: 0.4;
+  }
+  70% {
+    transform: translate(5px, 3px);
+    opacity: 1;
+  }
+  85% {
+    transform: translate(-3px, -2px);
+    opacity: 0.55;
+  }
+}
+
 .animate-petaldrift {
-  animation: petaldrift linear infinite;
+  animation: petaldrift var(--day-dur, 30s) linear infinite;
+}
+
+.dark .animate-petaldrift {
+  animation-name: fireflyHover;
+  animation-timing-function: ease-in-out;
+  animation-duration: var(--night-dur, 6s);
 }
 
 /* Scrollbar styling */
