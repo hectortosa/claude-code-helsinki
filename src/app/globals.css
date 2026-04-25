@@ -161,9 +161,9 @@
     text-wrap: balance;
   }
 
-  /* Gradient text */
+  /* Gradient text - used by the historical slide deck (aurora palette) */
   .gradient-text {
-    @apply bg-gradient-to-r from-claude-coral via-midnight-amber to-summer-pine bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-claude-coral via-aurora-purple to-finnish-blue bg-clip-text text-transparent;
   }
 
   /* Focus visible outline */
