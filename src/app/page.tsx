@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { Terminal } from "@/components/terminal/Terminal";
-import { AuroraBackground } from "@/components/aurora/AuroraBackground";
+import { SummerBackground } from "@/components/summer/SummerBackground";
 import { LumaCalendar } from "@/components/luma/LumaCalendar";
-import { ForestDivider } from "@/components/forest/ForestDivider";
+import { SummerForestDivider } from "@/components/summer/SummerForestDivider";
 
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <AuroraBackground intensity="subtle" className="wave-divider">
+      <SummerBackground intensity="subtle" className="wave-divider">
         <section className="container mx-auto px-4 py-20 md:py-32 pb-40">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
@@ -44,8 +44,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <ForestDivider />
-      </AuroraBackground>
+        <SummerForestDivider />
+      </SummerBackground>
 
       {/* Terminal Section */}
       <section className="container mx-auto px-4 py-20">

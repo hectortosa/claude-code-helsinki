@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { PetalParticles } from "@/components/petals/PetalParticles";
+import { SnowParticles } from "@/components/snow/SnowParticles";
 
 interface AuroraBackgroundProps {
   className?: string;
@@ -15,30 +15,37 @@ export function AuroraBackground({
   intensity = "subtle",
 }: AuroraBackgroundProps) {
   const intensityClasses = {
-    subtle: "opacity-80",
-    medium: "opacity-90",
-    strong: "opacity-100",
+    subtle: "opacity-30",
+    medium: "opacity-50",
+    strong: "opacity-70",
   };
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      {/* Summer sky - light mode only */}
+      {/* Winter sky background - light mode only */}
       <div
-        className="absolute inset-0 summer-sky dark:hidden"
+        className="absolute inset-0 winter-sky dark:hidden"
         aria-hidden="true"
       />
 
-      {/* Finnish summer night sky - dark mode only */}
+      {/* Snow particles - light mode only */}
+      <SnowParticles />
+
+      {/* Aurora gradient layers - dark mode only */}
       <div
         className={cn(
-          "absolute inset-0 midnight-sun-gradient hidden dark:block",
+          "absolute inset-0 aurora-gradient hidden dark:block",
           intensityClasses[intensity]
         )}
         aria-hidden="true"
       />
 
-      {/* Drifting pollen / fireflies - rendered above the sky in both modes */}
-      <PetalParticles />
+      {/* Additional aurora shimmer - dark mode only */}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-aurora-cyan/10 to-transparent animate-pulse hidden dark:block"
+        style={{ animationDuration: "8s" }}
+        aria-hidden="true"
+      />
 
       {/* Content */}
       <div className="relative z-10">{children}</div>

@@ -1,19 +1,16 @@
 "use client";
 
 interface TreeConfig {
-  position: number; // pixel position from left
+  position: number;
   height: number;
   mirrored?: boolean;
 }
 
-// Fixed container width - trees are positioned in pixels within this
 const CONTAINER_WIDTH = 2400;
 
-// Generate multiple layers of trees for a dense forest effect
 function generateTrees(): TreeConfig[] {
   const trees: TreeConfig[] = [];
 
-  // Back layer - tall trees, spaced every 30px
   for (let i = 0; i < CONTAINER_WIDTH; i += 30) {
     trees.push({
       position: i,
@@ -21,8 +18,6 @@ function generateTrees(): TreeConfig[] {
       mirrored: (i / 30) % 2 === 0,
     });
   }
-
-  // Mid-back layer - offset by 15px
   for (let i = 15; i < CONTAINER_WIDTH; i += 30) {
     trees.push({
       position: i,
@@ -30,8 +25,6 @@ function generateTrees(): TreeConfig[] {
       mirrored: (i / 30) % 2 === 1,
     });
   }
-
-  // Mid layer - every 25px, different offset
   for (let i = 8; i < CONTAINER_WIDTH; i += 25) {
     trees.push({
       position: i,
@@ -39,8 +32,6 @@ function generateTrees(): TreeConfig[] {
       mirrored: (i / 25) % 3 === 0,
     });
   }
-
-  // Front layer - shorter trees, every 20px
   for (let i = 5; i < CONTAINER_WIDTH; i += 20) {
     trees.push({
       position: i,
@@ -48,8 +39,6 @@ function generateTrees(): TreeConfig[] {
       mirrored: (i / 20) % 2 === 1,
     });
   }
-
-  // Extra fill layer - very dense, every 18px
   for (let i = 12; i < CONTAINER_WIDTH; i += 18) {
     trees.push({
       position: i,
@@ -63,8 +52,11 @@ function generateTrees(): TreeConfig[] {
 
 const trees = generateTrees();
 
-export function ForestDivider() {
-  // How much of the tree tips should show above the solid bar
+/**
+ * Pine forest tinted for the summer theme: deep forest green by day,
+ * solid silhouette against the amber horizon at night.
+ */
+export function SummerForestDivider() {
   const visibleTipHeight = 60;
 
   return (
@@ -72,7 +64,6 @@ export function ForestDivider() {
       className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden"
       style={{ height: `${visibleTipHeight}px` }}
     >
-      {/* Fixed-width container centered, overflows on sides */}
       <div
         className="absolute bottom-0"
         style={{
@@ -82,7 +73,7 @@ export function ForestDivider() {
           height: `${visibleTipHeight}px`,
         }}
       >
-        {/* Light mode trees */}
+        {/* Light mode trees - deep forest pine green */}
         {trees.map((tree, index) => (
           <div
             key={index}
@@ -102,13 +93,13 @@ export function ForestDivider() {
               style={{
                 height: `${tree.height}px`,
                 filter:
-                  "brightness(0) saturate(100%) invert(97%) sepia(5%) saturate(300%) hue-rotate(10deg) brightness(98%)",
+                  "brightness(0) saturate(100%) invert(26%) sepia(32%) saturate(500%) hue-rotate(85deg) brightness(80%)",
               }}
             />
           </div>
         ))}
 
-        {/* Dark mode trees */}
+        {/* Dark mode trees - solid silhouette under midnight sun */}
         {trees.map((tree, index) => (
           <div
             key={`dark-${index}`}
@@ -128,7 +119,7 @@ export function ForestDivider() {
               style={{
                 height: `${tree.height}px`,
                 filter:
-                  "brightness(0) saturate(100%) invert(5%) sepia(5%) saturate(100%) hue-rotate(180deg) brightness(100%)",
+                  "brightness(0) saturate(100%) invert(12%) sepia(20%) saturate(900%) hue-rotate(95deg) brightness(70%)",
               }}
             />
           </div>

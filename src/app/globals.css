@@ -96,6 +96,29 @@
     );
   }
 
+  /* Winter sky - retained for the historical slide deck */
+  .winter-sky {
+    background: linear-gradient(
+      180deg,
+      #d8dde1 0%,
+      #c9d0d6 50%,
+      #bec7cf 100%
+    );
+  }
+
+  /* Aurora gradient - retained for the historical slide deck */
+  .aurora-gradient {
+    background: linear-gradient(
+      -45deg,
+      oklch(from var(--color-aurora-green) l c h / 0.3),
+      oklch(from var(--color-aurora-cyan) l c h / 0.3),
+      oklch(from var(--color-aurora-purple) l c h / 0.3),
+      oklch(from var(--color-finnish-blue) l c h / 0.2)
+    );
+    background-size: 200% 200%;
+    animation: aurora 15s ease infinite;
+  }
+
   /* Terminal styling */
   .terminal {
     @apply bg-terminal-bg rounded-lg font-mono text-terminal-text;
@@ -150,6 +173,16 @@
 }
 
 /* Animations */
+/* Aurora animation - retained for the historical slide deck */
+@keyframes aurora {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @keyframes blink {
   0%, 100% {
     opacity: 1;
@@ -226,6 +259,28 @@
   animation-name: fireflyHover;
   animation-timing-function: ease-in-out;
   animation-duration: var(--night-dur, 6s);
+}
+
+/* Snowfall - retained for the historical slide deck */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.animate-snowfall {
+  animation: snowfall linear infinite;
 }
 
 /* Scrollbar styling */
