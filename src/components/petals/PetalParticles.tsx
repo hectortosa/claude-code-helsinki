@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 interface Petal {
   id: number;
-  left: number;
+  top: number;
   size: number;
   duration: number;
   delay: number;
@@ -14,11 +14,11 @@ interface Petal {
 function generatePetals(count: number): Petal[] {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    left: Math.random() * 100,
-    size: 3 + Math.random() * 4,
-    duration: 16 + Math.random() * 14,
-    delay: Math.random() * 12,
-    opacity: 0.45 + Math.random() * 0.4,
+    top: Math.random() * 100,
+    size: 1.5 + Math.random() * 1.8,
+    duration: 28 + Math.random() * 22,
+    delay: -Math.random() * 30,
+    opacity: 0.4 + Math.random() * 0.4,
   }));
 }
 
@@ -27,7 +27,7 @@ export function PetalParticles() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPetals(generatePetals(45));
+    setPetals(generatePetals(40));
   }, []);
 
   if (petals.length === 0) {
@@ -36,21 +36,22 @@ export function PetalParticles() {
 
   return (
     <div
-      className="absolute inset-0 overflow-hidden pointer-events-none [--petal-color:#fff5dc] [--petal-glow:rgba(255,232,196,0.7)] dark:[--petal-color:#ffc890] dark:[--petal-glow:rgba(255,180,120,0.8)]"
+      className="absolute inset-0 overflow-hidden pointer-events-none [--petal-color:#fff5dc] [--petal-glow:rgba(255,232,196,0.6)] dark:[--petal-color:#ffd49a] dark:[--petal-glow:rgba(255,196,140,0.7)]"
     >
       {petals.map((petal) => (
         <div
           key={petal.id}
-          className="absolute rounded-full animate-petalfall"
+          className="absolute rounded-full animate-petaldrift"
           style={{
-            left: `${petal.left}%`,
+            top: `${petal.top}%`,
+            left: 0,
             width: `${petal.size}px`,
             height: `${petal.size}px`,
             opacity: petal.opacity,
             animationDuration: `${petal.duration}s`,
             animationDelay: `${petal.delay}s`,
             backgroundColor: "var(--petal-color)",
-            boxShadow: `0 0 ${petal.size * 2.5}px var(--petal-glow)`,
+            boxShadow: `0 0 ${petal.size * 3}px var(--petal-glow)`,
           }}
         />
       ))}

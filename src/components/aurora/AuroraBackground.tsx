@@ -15,23 +15,20 @@ export function AuroraBackground({
   intensity = "subtle",
 }: AuroraBackgroundProps) {
   const intensityClasses = {
-    subtle: "opacity-40",
-    medium: "opacity-60",
-    strong: "opacity-80",
+    subtle: "opacity-80",
+    medium: "opacity-90",
+    strong: "opacity-100",
   };
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      {/* Summer sky background - light mode only */}
+      {/* Summer sky - light mode only */}
       <div
         className="absolute inset-0 summer-sky dark:hidden"
         aria-hidden="true"
       />
 
-      {/* Floating petals / fireflies - both modes */}
-      <PetalParticles />
-
-      {/* Midnight sun gradient - dark mode only */}
+      {/* Finnish summer night sky - dark mode only */}
       <div
         className={cn(
           "absolute inset-0 midnight-sun-gradient hidden dark:block",
@@ -40,12 +37,8 @@ export function AuroraBackground({
         aria-hidden="true"
       />
 
-      {/* Soft horizon shimmer - dark mode only */}
-      <div
-        className="absolute inset-0 bg-gradient-to-t from-midnight-amber/15 via-transparent to-transparent animate-pulse hidden dark:block"
-        style={{ animationDuration: "10s" }}
-        aria-hidden="true"
-      />
+      {/* Drifting pollen / fireflies - rendered above the sky in both modes */}
+      <PetalParticles />
 
       {/* Content */}
       <div className="relative z-10">{children}</div>

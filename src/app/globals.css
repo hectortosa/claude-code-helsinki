@@ -26,11 +26,12 @@
   --color-summer-meadow: #87b98a;
   --color-summer-pine: #4a7c59;
 
-  /* Midnight Sun (white nights) Colors */
-  --color-midnight-rose: #e8a4a0;
-  --color-midnight-amber: #f2b27a;
-  --color-midnight-violet: #b483c4;
-  --color-midnight-dusk: #4e639c;
+  /* Finnish Summer Night Colors (white nights / nightless sky) */
+  --color-midnight-deep: #1a2745;
+  --color-midnight-blue: #2d425f;
+  --color-midnight-steel: #4a6182;
+  --color-midnight-glow: #c08658;
+  --color-midnight-amber: #e8a456;
 
   /* Terminal Colors */
   --color-terminal-bg: #1a1a2e;
@@ -43,7 +44,6 @@
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   /* Animations */
-  --animate-midnight-sun: midnightSun 18s ease infinite;
   --animate-terminal-blink: blink 1s step-end infinite;
   --animate-fade-in: fadeIn 0.5s ease-out;
   --animate-slide-up: slideUp 0.5s ease-out;
@@ -84,17 +84,16 @@
     );
   }
 
-  /* Midnight sun gradient - dark mode (Finnish white nights) */
+  /* Finnish summer night sky - dark mode (deep blue with amber horizon) */
   .midnight-sun-gradient {
     background: linear-gradient(
-      -45deg,
-      oklch(from var(--color-midnight-violet) l c h / 0.35),
-      oklch(from var(--color-midnight-rose) l c h / 0.35),
-      oklch(from var(--color-midnight-amber) l c h / 0.35),
-      oklch(from var(--color-midnight-dusk) l c h / 0.25)
+      180deg,
+      var(--color-midnight-deep) 0%,
+      var(--color-midnight-blue) 30%,
+      var(--color-midnight-steel) 62%,
+      var(--color-midnight-glow) 88%,
+      var(--color-midnight-amber) 100%
     );
-    background-size: 200% 200%;
-    animation: midnightSun 18s ease infinite;
   }
 
   /* Terminal styling */
@@ -141,7 +140,7 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-claude-coral via-midnight-rose to-summer-pine bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-claude-coral via-midnight-amber to-summer-pine bg-clip-text text-transparent;
   }
 
   /* Focus visible outline */
@@ -151,15 +150,6 @@
 }
 
 /* Animations */
-@keyframes midnightSun {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
 @keyframes blink {
   0%, 100% {
     opacity: 1;
@@ -179,28 +169,34 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes petalfall {
+@keyframes petaldrift {
   0% {
-    transform: translateY(-10px) translateX(0) rotate(0deg);
+    transform: translateX(-40px) translateY(0);
     opacity: 0;
   }
-  10% {
+  8% {
     opacity: 1;
   }
-  50% {
-    transform: translateY(50vh) translateX(40px) rotate(180deg);
+  25% {
+    transform: translateX(25vw) translateY(-10px);
   }
-  90% {
+  50% {
+    transform: translateX(50vw) translateY(8px);
+  }
+  75% {
+    transform: translateX(75vw) translateY(-6px);
+  }
+  92% {
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) translateX(0) rotate(360deg);
+    transform: translateX(105vw) translateY(4px);
     opacity: 0;
   }
 }
 
-.animate-petalfall {
-  animation: petalfall linear infinite;
+.animate-petaldrift {
+  animation: petaldrift linear infinite;
 }
 
 /* Scrollbar styling */
