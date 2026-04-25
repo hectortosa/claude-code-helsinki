@@ -82,7 +82,7 @@ export function ForestDivider() {
           height: `${visibleTipHeight}px`,
         }}
       >
-        {/* Light mode trees */}
+        {/* Light mode trees - lush summer pine green */}
         {trees.map((tree, index) => (
           <div
             key={index}
@@ -102,13 +102,13 @@ export function ForestDivider() {
               style={{
                 height: `${tree.height}px`,
                 filter:
-                  "brightness(0) saturate(100%) invert(97%) sepia(5%) saturate(300%) hue-rotate(10deg) brightness(98%)",
+                  "brightness(0) saturate(100%) invert(38%) sepia(28%) saturate(450%) hue-rotate(85deg) brightness(92%)",
               }}
             />
           </div>
         ))}
 
-        {/* Dark mode trees */}
+        {/* Dark mode trees - deep forest silhouette under midnight sun */}
         {trees.map((tree, index) => (
           <div
             key={`dark-${index}`}
@@ -128,7 +128,7 @@ export function ForestDivider() {
               style={{
                 height: `${tree.height}px`,
                 filter:
-                  "brightness(0) saturate(100%) invert(5%) sepia(5%) saturate(100%) hue-rotate(180deg) brightness(100%)",
+                  "brightness(0) saturate(100%) invert(18%) sepia(18%) saturate(800%) hue-rotate(95deg) brightness(80%)",
               }}
             />
           </div>

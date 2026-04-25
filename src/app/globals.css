@@ -15,10 +15,22 @@
   --color-finnish-blue: #003580;
   --color-finnish-white: #ffffff;
 
-  /* Aurora Colors */
+  /* Aurora Colors (kept for historical slide decks) */
   --color-aurora-green: #00ff87;
   --color-aurora-cyan: #60efff;
   --color-aurora-purple: #b967ff;
+
+  /* Summer Day Colors */
+  --color-summer-sky: #a8c8e0;
+  --color-summer-warm: #f5e6c8;
+  --color-summer-meadow: #87b98a;
+  --color-summer-pine: #4a7c59;
+
+  /* Midnight Sun (white nights) Colors */
+  --color-midnight-rose: #e8a4a0;
+  --color-midnight-amber: #f2b27a;
+  --color-midnight-violet: #b483c4;
+  --color-midnight-dusk: #4e639c;
 
   /* Terminal Colors */
   --color-terminal-bg: #1a1a2e;
@@ -31,7 +43,7 @@
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   /* Animations */
-  --animate-aurora: aurora 15s ease infinite;
+  --animate-midnight-sun: midnightSun 18s ease infinite;
   --animate-terminal-blink: blink 1s step-end infinite;
   --animate-fade-in: fadeIn 0.5s ease-out;
   --animate-slide-up: slideUp 0.5s ease-out;
@@ -62,27 +74,27 @@
 }
 
 @layer components {
-  /* Winter sky background - light mode */
-  .winter-sky {
+  /* Summer sky background - light mode (Finnish midsummer afternoon) */
+  .summer-sky {
     background: linear-gradient(
       180deg,
-      #d8dde1 0%,
-      #c9d0d6 50%,
-      #bec7cf 100%
+      #a8c8e0 0%,
+      #c5dcea 45%,
+      #f5e6c8 100%
     );
   }
 
-  /* Aurora gradient background - dark mode */
-  .aurora-gradient {
+  /* Midnight sun gradient - dark mode (Finnish white nights) */
+  .midnight-sun-gradient {
     background: linear-gradient(
       -45deg,
-      oklch(from var(--color-aurora-green) l c h / 0.3),
-      oklch(from var(--color-aurora-cyan) l c h / 0.3),
-      oklch(from var(--color-aurora-purple) l c h / 0.3),
-      oklch(from var(--color-finnish-blue) l c h / 0.2)
+      oklch(from var(--color-midnight-violet) l c h / 0.35),
+      oklch(from var(--color-midnight-rose) l c h / 0.35),
+      oklch(from var(--color-midnight-amber) l c h / 0.35),
+      oklch(from var(--color-midnight-dusk) l c h / 0.25)
     );
     background-size: 200% 200%;
-    animation: aurora 15s ease infinite;
+    animation: midnightSun 18s ease infinite;
   }
 
   /* Terminal styling */
@@ -129,7 +141,7 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-claude-coral via-aurora-purple to-finnish-blue bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-claude-coral via-midnight-rose to-summer-pine bg-clip-text text-transparent;
   }
 
   /* Focus visible outline */
@@ -139,7 +151,7 @@
 }
 
 /* Animations */
-@keyframes aurora {
+@keyframes midnightSun {
   0%, 100% {
     background-position: 0% 50%;
   }
@@ -167,25 +179,28 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes snowfall {
+@keyframes petalfall {
   0% {
-    transform: translateY(-10px) translateX(0);
+    transform: translateY(-10px) translateX(0) rotate(0deg);
     opacity: 0;
   }
   10% {
     opacity: 1;
   }
+  50% {
+    transform: translateY(50vh) translateX(40px) rotate(180deg);
+  }
   90% {
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) translateX(20px);
+    transform: translateY(100vh) translateX(0) rotate(360deg);
     opacity: 0;
   }
 }
 
-.animate-snowfall {
-  animation: snowfall linear infinite;
+.animate-petalfall {
+  animation: petalfall linear infinite;
 }
 
 /* Scrollbar styling */
