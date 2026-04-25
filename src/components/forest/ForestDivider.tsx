@@ -102,7 +102,7 @@ export function ForestDivider() {
               style={{
                 height: `${tree.height}px`,
                 filter:
-                  "brightness(0) saturate(100%) invert(38%) sepia(28%) saturate(450%) hue-rotate(85deg) brightness(92%)",
+                  "brightness(0) saturate(100%) invert(26%) sepia(32%) saturate(500%) hue-rotate(85deg) brightness(80%)",
               }}
             />
           </div>
@@ -128,7 +128,7 @@ export function ForestDivider() {
               style={{
                 height: `${tree.height}px`,
                 filter:
-                  "brightness(0) saturate(100%) invert(18%) sepia(18%) saturate(800%) hue-rotate(95deg) brightness(80%)",
+                  "brightness(0) saturate(100%) invert(12%) sepia(20%) saturate(900%) hue-rotate(95deg) brightness(70%)",
               }}
             />
           </div>
