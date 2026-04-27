@@ -166,6 +166,11 @@
     @apply bg-gradient-to-r from-claude-coral via-aurora-purple to-finnish-blue bg-clip-text text-transparent;
   }
 
+  /* Gradient text - summer/sunset palette for the summer-themed slide deck */
+  .gradient-text-summer {
+    @apply bg-gradient-to-r from-claude-coral via-midnight-amber to-summer-warm bg-clip-text text-transparent;
+  }
+
   /* Focus visible outline */
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-claude-coral focus-visible:ring-offset-2;

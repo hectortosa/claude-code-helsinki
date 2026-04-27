@@ -8,7 +8,53 @@ export const metadata: Metadata = {
   description: "Videos, presentations, and resources from Claude Code Helsinki",
 };
 
-const MEETUP_PRESENTATIONS = [
+interface MeetupSpeaker {
+  name: string;
+  role: string;
+  talk: string;
+  slidesUrl?: string;
+  linkedin?: string;
+}
+
+interface MeetupPresentation {
+  date: string;
+  title: string;
+  slidesUrl: string;
+  speakers: MeetupSpeaker[];
+}
+
+const MEETUP_PRESENTATIONS: MeetupPresentation[] = [
+  {
+    date: "April 27, 2026",
+    title: "Meetup #3",
+    slidesUrl: "/slides/20260427",
+    speakers: [
+      {
+        name: "Alejandra Soni",
+        role: "CCO, Groweo",
+        talk: "Asking Business Questions of Your Own Data",
+        linkedin: "https://www.linkedin.com/in/alejandra-soni/",
+      },
+      {
+        name: "Anna Ursin",
+        role: "Fractional GTM lead, B2B SaaS/tech",
+        talk: "Building a Business Operating System",
+        linkedin: "https://www.linkedin.com/in/ursinanna/",
+      },
+      {
+        name: "Sohvi Silius",
+        role: "User Insights Lead, Yousician",
+        talk: "How Claude Cowork Turned Me from a Casual AI User into a Workflow Creator",
+        linkedin: "https://www.linkedin.com/in/sohvisilius/",
+      },
+      {
+        name: "Tapio Haaja",
+        role: "CCO, Intentface",
+        talk: "My Sales Team Is Me and Claude",
+        linkedin: "https://www.linkedin.com/in/tapiohaaja/",
+      },
+    ],
+  },
   {
     date: "March 5, 2026",
     title: "Meetup #2",
