@@ -23,8 +23,6 @@ import {
   Timer,
   Wrench,
   Mic,
-  Coffee,
-  TrendingUp,
   Heart,
   Sparkles,
   BookOpen,
@@ -38,12 +36,15 @@ const speakers = [
     title: "Asking Business Questions of Your Own Data",
     bio: "CCO at Groweo. Ex-Customer Success Director at Supermetrics.",
     image: "/speakers/alejandra-soni.jpg",
+    slidesUrl: "/presentations/20260427/alejandra-soni.html",
   },
   {
     name: "Anna Ursin",
     title: "Building a Business Operating System",
     bio: "Fractional GTM lead for B2B SaaS/tech. GTM Advisor at Maptionnaire.",
     image: "/speakers/anna-ursin.jpg",
+    slidesUrl:
+      "https://gamma.app/docs/Building-a-Business-Context-OS--oc82ftyx1ai79c9?mode=present",
   },
   {
     name: "Sohvi Silius",
@@ -51,12 +52,14 @@ const speakers = [
       "How Claude Cowork Turned Me from a Casual AI User into a Workflow Creator",
     bio: "User Insights Lead at Yousician. Founder of Silius Insights.",
     image: "/speakers/sohvi-silius.jpg",
+    slidesUrl: "/presentations/20260427/Sohvi-Silius.pdf",
   },
   {
     name: "Tapio Haaja",
     title: "My Sales Team Is Me and Claude",
     bio: "CCO at Intentface. Ex-Sanoma & MTV.",
     image: "/speakers/tapio-haaja.jpg",
+    slidesUrl: "/presentations/20260427/Tapio-Haaja.pdf",
   },
 ];
 
@@ -1098,85 +1101,25 @@ export default function Meetup20260427() {
           {speaker.bio && (
             <p className="text-lg text-white/50 mb-6">{speaker.bio}</p>
           )}
-          <p className="text-xl md:text-2xl text-aurora-cyan font-light leading-relaxed">
+          <p className="text-xl md:text-2xl text-claude-coral font-light leading-relaxed">
             {speaker.title}
           </p>
+          {speaker.slidesUrl && (
+            <a
+              href={speaker.slidesUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-8 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
+            >
+              View slides
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          )}
         </div>
       </Slide>
     )),
 
-    // 32. Networking
-    <Slide key="networking">
-      <div className="text-center max-w-3xl">
-        <Coffee className="w-16 h-16 text-claude-coral mx-auto mb-6 opacity-80" />
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-          <span className="gradient-text-summer">Networking</span>
-        </h2>
-        <p className="text-xl text-white/70 mb-8">
-          Show something, ask something, or just hang out.
-        </p>
-        <div className="grid md:grid-cols-3 gap-4 text-left">
-          <div className="bg-white/5 rounded-xl p-5 border border-white/10">
-            <p className="text-aurora-cyan font-mono text-xs uppercase tracking-widest mb-2">
-              Venue
-            </p>
-            <p className="text-white/80 text-sm">Sanomat</p>
-          </div>
-          <div className="bg-white/5 rounded-xl p-5 border border-white/10">
-            <p className="text-aurora-cyan font-mono text-xs uppercase tracking-widest mb-2">
-              Luma
-            </p>
-            <p className="text-white/80 text-sm">luma.com/ClaudeCodeHelsinki</p>
-          </div>
-          <div className="bg-white/5 rounded-xl p-5 border border-white/10">
-            <p className="text-aurora-cyan font-mono text-xs uppercase tracking-widest mb-2">
-              Stay in touch
-            </p>
-            <p className="text-white/80 text-sm">Discord, Mailing list</p>
-          </div>
-        </div>
-      </div>
-    </Slide>,
-
-    // 33. Takeaways
-    <Slide key="takeaways">
-      <div className="text-center max-w-4xl">
-        <TrendingUp className="w-16 h-16 text-aurora-green mx-auto mb-6 opacity-80" />
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-10">
-          <span className="gradient-text-summer">Takeaways</span>
-        </h2>
-        <div className="grid md:grid-cols-2 gap-4 text-left">
-          {[
-            {
-              title: "Beyond engineering",
-              body: "Anthropic is aiming Claude at the rest of the org, not just engineering.",
-            },
-            {
-              title: "Cowork is the surface",
-              body: "Cowork has matured into the primary surface for recurring business work.",
-            },
-            {
-              title: "From text to screen",
-              body: "Vision and Computer Use shift the input surface from text to screen.",
-            },
-            {
-              title: "Stable and transparent",
-              body: "The Claude Code stack is more stable and more transparent at the same time.",
-            },
-          ].map((t) => (
-            <div
-              key={t.title}
-              className="bg-white/5 rounded-2xl p-5 border border-white/10"
-            >
-              <h3 className="text-lg font-bold text-white mb-2">{t.title}</h3>
-              <p className="text-white/65 text-sm leading-relaxed">{t.body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Slide>,
-
-    // 34. Thanks
+    // Thanks
     <Slide key="thanks">
       <div className="text-center max-w-3xl">
         <Heart className="w-16 h-16 text-claude-coral mx-auto mb-8 opacity-80" />
@@ -1190,15 +1133,26 @@ export default function Meetup20260427() {
           See you at meetup #4: Claude Code for teams and orgs, beyond vibe
           coding.
         </p>
-        <a
-          href="https://luma.com/ClaudeCodeHelsinki"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 text-white/80 hover:text-white transition-colors text-sm font-medium"
-        >
-          luma.com/ClaudeCodeHelsinki
-          <ExternalLink className="w-4 h-4" />
-        </a>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="https://claude-code-helsinki.codesharegrow.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 text-white/80 hover:text-white transition-colors text-sm font-medium"
+          >
+            claude-code-helsinki.codesharegrow.net
+            <ExternalLink className="w-4 h-4" />
+          </a>
+          <a
+            href="https://luma.com/ClaudeCodeHelsinki"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 text-white/80 hover:text-white transition-colors text-sm font-medium"
+          >
+            luma.com/ClaudeCodeHelsinki
+            <ExternalLink className="w-4 h-4" />
+          </a>
+        </div>
       </div>
     </Slide>,
   ];
