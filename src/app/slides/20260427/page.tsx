@@ -494,12 +494,12 @@ export default function Meetup20260427() {
           </div>
         </div>
         <a
-          href="https://www.theregister.com/2026/03/26/anthropic_tweaks_usage_limits/"
+          href="https://x.com/trq212/status/2037254607001559305"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 mt-6 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
         >
-          Read more
+          Read the announcement
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
@@ -588,12 +588,12 @@ export default function Meetup20260427() {
           </div>
         </div>
         <a
-          href="https://www.infoworld.com/article/4156852/anthropic-rolls-out-claude-managed-agents.html"
+          href="https://www.anthropic.com/engineering/managed-agents"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 mt-6 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
         >
-          Read more
+          Read the engineering post
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
@@ -819,12 +819,12 @@ export default function Meetup20260427() {
           </div>
         </div>
         <a
-          href="https://thenewstack.io/anthropic-takes-claude-cowork-out-of-preview-and-straight-into-the-enterprise/"
+          href="https://claude.com/blog/cowork-for-enterprise"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 mt-6 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
         >
-          Read more
+          Read the announcement
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
@@ -899,12 +899,12 @@ export default function Meetup20260427() {
           </div>
         </div>
         <a
-          href="https://www.anthropic.com/product/claude-cowork"
+          href="https://claude.com/blog/dispatch-and-computer-use"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 mt-6 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
         >
-          Read more
+          Read the announcement
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
@@ -974,12 +974,12 @@ export default function Meetup20260427() {
           </div>
         </div>
         <a
-          href="https://www.anthropic.com/news/3-5-models-and-computer-use"
+          href="https://claude.com/blog/dispatch-and-computer-use"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 mt-6 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
         >
-          Read more
+          Read the announcement
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
@@ -1012,12 +1012,12 @@ export default function Meetup20260427() {
           </div>
         </div>
         <a
-          href="https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma"
+          href="https://www.anthropic.com/news/claude-design-anthropic-labs"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 mt-6 text-claude-coral hover:text-claude-coral-dark transition-colors text-sm"
         >
-          Read more
+          Read the announcement
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
