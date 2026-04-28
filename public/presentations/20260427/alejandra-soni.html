@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asking Business Questions of Your Own Data</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #F5F2EA;
+    color: #2A2420;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slide {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 6vh 10vw;
+    text-align: center;
+    position: relative;
+  }
+
+  .slide.active { display: flex; }
+  .slide.left { text-align: left; align-items: flex-start; }
+
+  /* Warm accent glow */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -25%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(204,120,92,0.09) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .slide::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(7,163,149,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .slide > * { position: relative; z-index: 1; }
+
+  .slide.accent-bg {
+    background: linear-gradient(135deg, #FAF6ED 0%, #F2EDE1 50%, #F5F2EA 100%);
+  }
+
+  h1 {
+    font-size: 4.2rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: #1A1816;
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.2rem;
+    color: #1A1816;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    color: #CC785C;
+  }
+
+  p, li {
+    font-size: 1.7rem;
+    line-height: 1.6;
+    color: #3D3833;
+    max-width: 900px;
+  }
+
+  .highlight {
+    color: #CC785C;
+    font-weight: 600;
+  }
+
+  .highlight-orange { color: #D97757; font-weight: 600; }
+  .highlight-green { color: #6B8E71; font-weight: 600; }
+  .highlight-red { color: #B84A3C; font-weight: 600; }
+
+  .quote {
+    font-size: 2.2rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: #2A2420;
+    max-width: 850px;
+    border-left: 4px solid #CC785C;
+    padding-left: 2rem;
+    text-align: left;
+  }
+
+  .section-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #CC785C;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+    color: #6A6560;
+    margin-top: 0.5rem;
+  }
+
+  /* ===== CHAT WINDOW (Claude Code desktop app look) ===== */
+  .terminal {
+    background: #FFFFFF;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 960px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(42,36,32,0.12), 0 0 0 1px rgba(42,36,32,0.06);
+    text-align: left;
+    margin: 1rem 0;
+  }
+
+  .terminal-bar {
+    background: #FAF6ED;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #E8E3D5;
+  }
+
+  /* Hide the old mac-style traffic-light dots */
+  .terminal-dot { display: none; }
+
+  .terminal-bar::before {
+    content: '';
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #CC785C, #B45F42);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(204,120,92,0.25);
+  }
+
+  .terminal-bar::after {
+    content: '✦ Claude Code';
+    color: #CC785C;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-right: 4px;
+  }
+
+  .terminal-title {
+    color: #6A6560;
+    font-size: 0.9rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    margin-left: 0;
+    font-weight: 400;
+  }
+
+  .terminal-title::before {
+    content: '· ';
+    color: #B8B0A3;
+    margin-right: 4px;
+  }
+
+  .terminal-body {
+    padding: 1.8rem 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #2A2420;
+  }
+
+  .terminal-body .prompt-line {
+    color: #2A2420;
+    margin-bottom: 0.9rem;
+    background: #FAF6ED;
+    padding: 0.85rem 1.1rem;
+    border-radius: 10px;
+    border-left: 3px solid #CC785C;
+  }
+
+  .terminal-body .prompt-caret {
+    color: #CC785C;
+    font-weight: 700;
+    margin-right: 0.3rem;
+  }
+
+  .terminal-body .user-input {
+    color: #2A2420;
+    font-weight: 500;
+  }
+
+  .terminal-body .claude-label {
+    color: #CC785C;
+    font-weight: 600;
+    margin-top: 1.3rem;
+    margin-bottom: 0.7rem;
+    display: block;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+
+  .terminal-body .claude-label::before {
+    content: '✦ ';
+  }
+
+  .terminal-body .response {
+    color: #2A2420;
+    margin-bottom: 0.35rem;
+  }
+
+  .terminal-body .response-header {
+    color: #1A1816;
+    font-weight: 600;
+    margin-top: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .terminal-body .response-muted {
+    color: #6A6560;
+  }
+
+  .terminal-body .response-green { color: #6B8E71; font-weight: 600; }
+  .terminal-body .response-yellow { color: #C79100; font-weight: 600; }
+  .terminal-body .response-red { color: #B84A3C; font-weight: 600; }
+  .terminal-body .response-purple { color: #CC785C; font-weight: 600; }
+
+  .terminal-body .divider {
+    border: none;
+    border-top: 1px solid #E8E3D5;
+    margin: 0.9rem 0;
+  }
+
+  .terminal-body .tool-call {
+    background: #F5F1E6;
+    border-radius: 6px;
+    padding: 0.45rem 0.8rem;
+    margin: 0.4rem 0;
+    font-size: 0.85rem;
+    color: #6A6560;
+    display: inline-block;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .terminal-body .tool-call .tool-icon { color: #CC785C; }
+
+  /* ===== DATA TABLE ===== */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .data-table th {
+    text-align: left;
+    color: #CC785C;
+    font-weight: 600;
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-bottom: 1px solid #E8E3D5;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .data-table td {
+    padding: 0.4rem 1rem 0.4rem 0;
+    color: #2A2420;
+    border-bottom: 1px solid #F2EDE1;
+  }
+
+  .data-table th.num { text-align: right; }
+  .data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .data-table td.green { color: #6B8E71; font-weight: 600; }
+  .data-table td.yellow { color: #C79100; font-weight: 600; }
+  .data-table td.red { color: #B84A3C; font-weight: 600; }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .flow-box {
+    background: #FFFFFF;
+    border: 1px solid #E5E0D4;
+    border-radius: 10px;
+    padding: 1.2rem 1.8rem;
+    text-align: center;
+    min-width: 160px;
+    box-shadow: 0 4px 12px rgba(42,36,32,0.06);
+  }
+
+  .flow-box .flow-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .flow-box .flow-label {
+    font-size: 1rem;
+    color: #2A2420;
+    font-weight: 500;
+  }
+
+  .flow-box.active-box {
+    border-color: #CC785C;
+    background: #FDF6F1;
+    box-shadow: 0 4px 16px rgba(204,120,92,0.18);
+  }
+
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #B8B0A3;
+  }
+
+  /* ===== METRIC CARDS ===== */
+  .metric-row {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .metric-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E0D4;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    min-width: 180px;
+    flex: 1;
+    max-width: 240px;
+    box-shadow: 0 4px 12px rgba(42,36,32,0.06);
+  }
+
+  .metric-card .metric-value {
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  .metric-card .metric-label {
+    font-size: 0.9rem;
+    color: #6A6560;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .metric-card.purple .metric-value { color: #CC785C; }
+  .metric-card.green .metric-value { color: #6B8E71; }
+  .metric-card.orange .metric-value { color: #D97757; }
+  .metric-card.red .metric-value { color: #B84A3C; }
+
+  /* ===== ICON LIST ===== */
+  .icon-list {
+    list-style: none;
+    margin-top: 1.2rem;
+  }
+
+  .icon-list li {
+    padding: 0.6rem 0;
+    padding-left: 2.5rem;
+    position: relative;
+    font-size: 1.5rem;
+    color: #2A2420;
+  }
+
+  .icon-list li .icon {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    font-size: 1.4rem;
+  }
+
+  /* ===== STEPS ===== */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    margin-top: 1.5rem;
+  }
+
+  .steps li {
+    counter-increment: step;
+    padding: 0.8rem 0;
+    padding-left: 3.5rem;
+    position: relative;
+    font-size: 1.5rem;
+    color: #2A2420;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #CC785C, #B45F42);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(204,120,92,0.25);
+  }
+
+  /* ===== TAGS ===== */
+  .tag-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tag {
+    background: #FFFFFF;
+    border: 1px solid #CC785C;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.3rem;
+    color: #CC785C;
+    font-weight: 500;
+  }
+
+  /* ===== CARDS (formerly security-grid) ===== */
+  .security-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 1.5rem;
+  }
+
+  .security-card {
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 1.3rem 1.6rem;
+    border: 1px solid #E5E0D4;
+    box-shadow: 0 4px 12px rgba(42,36,32,0.06);
+  }
+
+  .security-card .card-title {
+    font-size: 1rem;
+    color: #CC785C;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+
+  .security-card .card-body {
+    font-size: 1.2rem;
+    color: #2A2420;
+    line-height: 1.5;
+  }
+
+  .security-card.danger { border-color: #B84A3C; }
+  .security-card.danger .card-title { color: #B84A3C; }
+  .security-card.safe { border-color: #6B8E71; }
+  .security-card.safe .card-title { color: #6B8E71; }
+
+  /* Override for "Why Code" card layout */
+  .why-card {
+    background: #FFFFFF;
+    border: 1px solid #CC785C;
+    border-radius: 10px;
+    padding: 1.3rem 1.6rem;
+    box-shadow: 0 4px 12px rgba(204,120,92,0.1);
+  }
+  .why-card .card-title {
+    font-size: 1rem;
+    color: #CC785C;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+  .why-card .card-body {
+    font-size: 1.15rem;
+    color: #2A2420;
+    line-height: 1.5;
+  }
+
+  /* Inline code style */
+  code {
+    background: #F5F1E6;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #B45F42;
+    font-size: 0.92em;
+  }
+
+  /* ===== PROGRESS & NAV ===== */
+  .progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #B45F42, #CC785C, #07A395);
+    transition: width 0.3s ease;
+    z-index: 100;
+  }
+
+  .slide-number {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 2rem;
+    font-size: 0.85rem;
+    color: #9A9288;
+    z-index: 100;
+    font-family: 'SF Mono', monospace;
+  }
+
+  @media (max-width: 900px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    p, li { font-size: 1.2rem; }
+    .quote { font-size: 1.4rem; }
+    .terminal-body { font-size: 0.85rem; }
+    .security-grid { grid-template-columns: 1fr; }
+    .slide { padding: 4vh 6vw; }
+    .metric-card .metric-value { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: Title ==================== -->
+<div class="slide active accent-bg">
+  <div style="margin-bottom: 2rem;">
+    <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#CC785C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      <path d="M8 10h8M8 14h4" opacity="0.5"/>
+    </svg>
+  </div>
+  <h1>Asking Business Questions<br>of Your Own Data</h1>
+  <p class="subtitle">Claude Code + Google Sheets</p>
+  <p style="margin-top: 3rem; font-size: 1.1rem; color: #9A9288;">Claude Cowork for Everyone &mdash; Helsinki 2026</p>
+</div>
+
+<!-- ==================== SLIDE 2: Hi, I'm Alejandra ==================== -->
+<div class="slide left">
+  <div class="section-label">Quick intro</div>
+  <h2>Hi, I'm Alejandra.</h2>
+  <p style="margin-top: 0.8rem; color: #6A6560; font-size: 1.5rem;">CCO (Chief Customer Officer) at Groweo &middot; Helsinki</p>
+  <ul class="icon-list" style="margin-top: 1.6rem;">
+    <li><span class="icon" style="color: #CC785C;">&middot;</span>Telecom engineer who fell into customer success ten years ago</li>
+    <li><span class="icon" style="color: #CC785C;">&middot;</span>Five years at Supermetrics before this &mdash; global CS director, team of 27</li>
+    <li><span class="icon" style="color: #CC785C;">&middot;</span>🇲🇽 Mexican by birth, 🇫🇮 Helsinki by choice</li>
+  </ul>
+  <p style="margin-top: 2rem; font-size: 1.5rem; color: #2A2420;">Started using Claude Code in January.<br>Found the Helsinki community at the meetup last month.<br><span style="color: #6A6560;">Héctor Tortosa asked if I'd share what I'd built with a business-focused crowd &mdash; and here we are. 🤓</span></p>
+</div>
+
+<!-- ==================== SLIDE 3: The reality ==================== -->
+<div class="slide">
+  <div class="section-label">The Opportunity</div>
+  <h2>The questions that matter most<br>are rarely answered by a <span class="highlight">single dashboard</span>.</h2>
+</div>
+
+<!-- ==================== SLIDE 4: The questions ==================== -->
+<div class="slide left">
+  <div class="section-label">The Opportunity</div>
+  <p class="quote" style="margin-bottom: 1.5rem;">"How much revenue is at risk this quarter?"</p>
+  <p class="quote" style="margin-bottom: 1.5rem;">"Do we have enough people to maintain the customer relationships we need?"</p>
+  <p class="quote">"Who should my team call first this week?"</p>
+</div>
+
+<!-- ==================== SLIDE 5: Cross-cutting visual ==================== -->
+<div class="slide">
+  <h2>These are <span class="highlight">cross-cutting questions</span></h2>
+  <div class="flow-diagram" style="margin-top: 2rem;">
+    <div class="flow-box">
+      <div class="flow-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6B8E71" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+      </div>
+      <div class="flow-label">Billing Data</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">
+      <div class="flow-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#07A395" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="flow-label">CRM / Teams</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">
+      <div class="flow-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B84A3C" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="flow-label">Churn Notices</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">
+      <div class="flow-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CC785C" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="flow-label">Contracts</div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem;">The data is there. The challenge is <span class="highlight">synthesizing it fast enough</span> to act on it.</p>
+</div>
+
+<!-- ==================== SLIDE 6: UC1 intro ==================== -->
+<div class="slide accent-bg">
+  <div class="section-label">Use Case 1</div>
+  <h1>Retention<br>Forecast</h1>
+  <p style="margin-top: 1rem; color: #6A6560;">"Where are we headed? Where's the risk? What should we do about it?"</p>
+</div>
+
+<!-- ==================== SLIDE 7: UC1 prompt ==================== -->
+<div class="slide">
+  <div class="section-label">Use Case 1 &mdash; Retention Forecast</div>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-title">customer-ops</div>
+    </div>
+    <div class="terminal-body">
+      <div class="prompt-line"><span class="prompt-caret">&gt;</span> <span class="user-input">What's our retention forecast looking like? How has it progressed over the last 3 months, where is the most risk coming from, and what should we address to reduce it?</span></div>
+      <div class="tool-call"><span class="tool-icon">&#9670;</span> Reading "Billing Report" &mdash; Dashboard!A1:AK25</div>
+      <div class="tool-call"><span class="tool-icon">&#9670;</span> Reading "Churn Notices" &mdash; Customer list!A1:AA4000</div>
+      <div class="tool-call"><span class="tool-icon">&#9670;</span> Reading "Contracts" &mdash; All Customers!A1:I6000</div>
+      <div class="tool-call"><span class="tool-icon">&#9670;</span> Reading "Churn Reasons" &mdash; Analysis!A1:AC50</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 8: UC1 response ==================== -->
+<div class="slide">
+  <div class="section-label">Use Case 1 &mdash; Retention Forecast</div>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-title">customer-ops</div>
+    </div>
+    <div class="terminal-body">
+      <span class="claude-label">Claude</span>
+      <div class="response-header">Retention Forecast &mdash; 2026</div>
+      <hr class="divider">
+      <div class="response-header" style="font-size: 0.9rem;">GRR Progression (last 3 months)</div>
+      <div class="response"><span class="response-green">&#9679;</span> January: <strong>91.2%</strong> &nbsp;&rarr;&nbsp; <span class="response-yellow">&#9679;</span> February: <strong>89.4%</strong> &nbsp;&rarr;&nbsp; <span class="response-red">&#9679;</span> March: <strong>87.7%</strong></div>
+      <div class="response response-muted" style="font-size: 0.85rem;">Trending down 1.7 pts/month. Worst case (all at-risk contracts churn): 54%</div>
+      <hr class="divider">
+      <div class="response-header" style="font-size: 0.9rem;">Top Churn Drivers This Quarter</div>
+      <table class="data-table" style="margin-top: 0.3rem;">
+        <tr><th>Driver</th><th class="num">Customers</th><th class="num">ARR Impact</th><th>Trend</th></tr>
+        <tr><td>Low product adoption (&lt;1% conversion)</td><td class="num">184</td><td class="num red">&euro;1.4M</td><td class="red">&uarr; growing</td></tr>
+        <tr><td>Failed onboarding (never launched)</td><td class="num">152</td><td class="num yellow">&euro;980K</td><td class="yellow">steady</td></tr>
+        <tr><td>No CS engagement in 90+ days</td><td class="num">287</td><td class="num yellow">&euro;1.2M</td><td class="red">&uarr; growing</td></tr>
+        <tr><td>Pricing / ROI concerns (exit surveys)</td><td class="num">89</td><td class="num">&euro;620K</td><td class="green">&darr; declining</td></tr>
+      </table>
+      <hr class="divider">
+      <div class="response-header" style="font-size: 0.9rem;">Recommended Actions</div>
+      <div class="response"><span class="response-purple">1.</span> Re-engage the 287 silent accounts &mdash; highest save potential before they give notice</div>
+      <div class="response"><span class="response-purple">2.</span> Launch the 152 stuck onboardings &mdash; &euro;980K ARR at risk from never seeing value</div>
+      <div class="response"><span class="response-purple">3.</span> Run adoption reviews for the 184 low-conversion accounts &mdash; fastest-growing driver</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 9: UC1 expand ==================== -->
+<div class="slide">
+  <h2>It's not limited to Google Sheets</h2>
+  <div class="flow-diagram" style="margin-top: 2rem;">
+    <div class="flow-box active-box">
+      <div class="flow-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#CC785C" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+      </div>
+      <div class="flow-label">Google Sheets</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-icon" style="font-size: 1.4rem; color: #D97757; font-weight: 600;">HubSpot</div>
+      <div class="flow-label" style="color: #6A6560;">CRM data</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-icon" style="font-size: 1.4rem; color: #07A395; font-weight: 600;">Notion</div>
+      <div class="flow-label" style="color: #6A6560;">Notes &amp; docs</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-icon" style="font-size: 1.4rem; color: #6B8E71; font-weight: 600;">Slack</div>
+      <div class="flow-label" style="color: #6A6560;">Conversations</div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem;">Claude has <span class="highlight">built-in connectors</span> for the tools you already use &mdash;<br>Code, Chat, and Cowork all use them.</p>
+</div>
+
+<!-- ==================== SLIDE 10: UC2 intro ==================== -->
+<div class="slide accent-bg">
+  <div class="section-label">Use Case 2</div>
+  <h1>Portfolio<br>Performance</h1>
+  <p style="margin-top: 1rem; color: #6A6560;">"Are the portfolios balanced? Who's overloaded?"</p>
+</div>
+
+<!-- ==================== SLIDE 11: UC2 response ==================== -->
+<div class="slide">
+  <div class="section-label">Use Case 2 &mdash; Portfolio Performance</div>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-title">customer-ops</div>
+    </div>
+    <div class="terminal-body">
+      <div class="prompt-line"><span class="prompt-caret">&gt;</span> <span class="user-input">Break down retention by CSM &mdash; customers per person, churn rate, and at-risk contracts.</span></div>
+      <span class="claude-label">Claude</span>
+      <table class="data-table">
+        <tr><th>CSM</th><th class="num">Customers</th><th class="num">Churn Rate</th><th class="num">At-Risk</th><th>Status</th></tr>
+        <tr><td>CSM&nbsp;A</td><td class="num">210</td><td class="num green">4.2%</td><td class="num">12</td><td class="green">Healthy</td></tr>
+        <tr><td>CSM&nbsp;B</td><td class="num">195</td><td class="num green">5.1%</td><td class="num">18</td><td class="green">Healthy</td></tr>
+        <tr><td>CSM&nbsp;C</td><td class="num">390</td><td class="num yellow">8.7%</td><td class="num yellow">34</td><td class="yellow">Strained</td></tr>
+        <tr><td>CSM&nbsp;D</td><td class="num">430</td><td class="num red">12.3%</td><td class="num red">51</td><td class="red">Overloaded</td></tr>
+        <tr><td>CSM&nbsp;E</td><td class="num">440</td><td class="num red">14.1%</td><td class="num red">62</td><td class="red">Overloaded</td></tr>
+      </table>
+      <hr class="divider">
+      <div class="response"><span class="response-muted">Avg churn rate for CSMs under 250 customers:</span> <span class="response-green">4.7%</span></div>
+      <div class="response"><span class="response-muted">Avg churn rate for CSMs over 350 customers:</span> <span class="response-red">11.7%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 12: UC2 cadence ==================== -->
+<div class="slide left">
+  <h2>The leadership layer</h2>
+  <p style="margin-top: 1rem; margin-bottom: 1.5rem;">This only becomes actionable if you've defined your <span class="highlight">contact cadence</span>:</p>
+  <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+    <div class="metric-card" style="max-width: 220px; text-align: left;">
+      <div class="metric-value" style="font-size: 1.8rem; color: #B84A3C;">Monthly</div>
+      <div class="metric-label" style="font-size: 0.85rem;">High-value customers</div>
+    </div>
+    <div class="metric-card" style="max-width: 220px; text-align: left;">
+      <div class="metric-value" style="font-size: 1.8rem; color: #C79100;">Quarterly</div>
+      <div class="metric-label" style="font-size: 0.85rem;">Mid-tier customers</div>
+    </div>
+    <div class="metric-card" style="max-width: 220px; text-align: left;">
+      <div class="metric-value" style="font-size: 1.8rem; color: #6B8E71;">Automated</div>
+      <div class="metric-label" style="font-size: 0.85rem;">Long-tail customers</div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem;">Without cadence, you're looking at numbers.<br>With it, you're looking at a <span class="highlight">staffing decision</span>.</p>
+</div>
+
+<!-- ==================== SLIDE 13: UC3 intro ==================== -->
+<div class="slide accent-bg">
+  <div class="section-label">Use Case 3</div>
+  <h1>Capacity Planning<br>&amp; Hiring Budget</h1>
+  <p style="margin-top: 1rem; color: #6A6560;">"How many people do we need? What does it cost?"</p>
+</div>
+
+<!-- ==================== SLIDE 14: UC3 response ==================== -->
+<div class="slide">
+  <div class="section-label">Use Case 3 &mdash; Capacity Planning</div>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-title">customer-ops</div>
+    </div>
+    <div class="terminal-body">
+      <div class="prompt-line"><span class="prompt-caret">&gt;</span> <span class="user-input">Based on our customer segments &mdash; 600 automated, 500 quarterly, 400 monthly, rest in churn-rescue mode &mdash; how many CS specialists do we need? What does that cost as % of ARR?</span></div>
+      <span class="claude-label">Claude</span>
+      <div class="response-header">Recommended Team Structure</div>
+      <table class="data-table">
+        <tr><th>Role</th><th class="num">People</th><th>Covers</th></tr>
+        <tr><td>CS Specialist (full lifecycle)</td><td class="num">7</td><td>Quarterly, monthly &amp; rescue customers</td></tr>
+        <tr><td>Automation / Ops</td><td class="num">1</td><td>Tools &amp; dashboards</td></tr>
+        <tr><td>CS Lead</td><td class="num">1</td><td>Management &amp; escalations</td></tr>
+        <tr><td style="color: #CC785C; font-weight: 600;">Total</td><td class="num" style="color: #CC785C; font-weight: 600;">9</td><td></td></tr>
+      </table>
+      <hr class="divider">
+      <div class="response"><span class="response-muted">At &euro;20M ARR:</span> <span class="response-green">~3-4% of revenue</span></div>
+      <div class="response"><span class="response-muted">600 customers on automated &mdash; zero CS time needed</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 15: UC3 point ==================== -->
+<div class="slide">
+  <h2>A business case for your CFO.</h2>
+  <p style="margin-top: 1rem;">A number grounded in your actual data.</p>
+  <div class="metric-row" style="margin-top: 2rem;">
+    <div class="metric-card purple">
+      <div class="metric-value">9</div>
+      <div class="metric-label">Total headcount</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-value">3-4%</div>
+      <div class="metric-label">Of ARR</div>
+    </div>
+    <div class="metric-card orange">
+      <div class="metric-value">600</div>
+      <div class="metric-label">Automated customers</div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem;">When something changes &mdash; 50 new customers, one less team member &mdash;<br><span class="highlight">just ask again</span> with updated assumptions.</p>
+</div>
+
+<!-- ==================== SLIDE 16: Why Claude Code ==================== -->
+<div class="slide">
+  <div class="section-label">Why Claude Code</div>
+  <h2>Why Code, not Chat or Cowork?</h2>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; width: 100%; max-width: 1000px; margin-top: 2rem;">
+    <div class="why-card">
+      <div class="card-title">No preview overhead</div>
+      <div class="card-body">Reads sheets programmatically. No file cards, no "reading file&hellip;" UI. Values in, synthesis out.</div>
+    </div>
+    <div class="why-card">
+      <div class="card-title">Composability</div>
+      <div class="card-body">Chain tools: read a sheet &rarr; write a CSV &rarr; run a script &rarr; ask a follow-up. Chat can't do that.</div>
+    </div>
+    <div class="why-card">
+      <div class="card-title">Persistence</div>
+      <div class="card-body">Local folders, files, project memory, git. Chat has Projects; Cowork has workspaces. Neither matches a filesystem.</div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem; font-size: 1.4rem; color: #6A6560;">One-off question? <strong style="color: #2A2420;">Chat</strong>. Shared team workflow? <strong style="color: #2A2420;">Cowork</strong>. Solo recurring analysis? <span class="highlight">Code</span>.</p>
+</div>
+
+<!-- ==================== SLIDE 17: Could I do this in Cowork? ==================== -->
+<div class="slide">
+  <div class="section-label">A Fair Question</div>
+  <h2>Could I do this in Cowork?</h2>
+  <p style="margin-top: 1rem; font-size: 1.6rem; color: #6A6560;">Yes &mdash; Cowork has the same Google Workspace connector. The answers would be similar.</p>
+  <div class="security-grid" style="margin-top: 2rem;">
+    <div class="security-card" style="border-color: #07A395;">
+      <div class="card-title" style="color: #07A395;">Cowork is better if&hellip;</div>
+      <div class="card-body" style="margin-top: 0.6rem;">
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.3rem 0;">&bull; Multiple people on your team use the same analysis</li>
+          <li style="padding: 0.3rem 0;">&bull; You don't want to install anything on your computer</li>
+        </ul>
+      </div>
+    </div>
+    <div class="security-card" style="border-color: #CC785C;">
+      <div class="card-title" style="color: #CC785C;">Code is better if&hellip;</div>
+      <div class="card-body" style="margin-top: 0.6rem;">
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.3rem 0;">&bull; You're running this personally, for yourself</li>
+          <li style="padding: 0.3rem 0;">&bull; You want to combine sheet data with local files or scripts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top: 1.8rem; font-size: 1.4rem; color: #2A2420;">I picked Code because this is solo and recurring.<br><span style="color: #6A6560;">If your version is team-shared, Cowork is the right answer.</span></p>
+</div>
+
+<!-- ==================== SLIDE 18: Claude Code ==================== -->
+<div class="slide left">
+  <h3>Claude Code</h3>
+  <p>Anthropic's coding agent. It comes as a <span class="highlight">desktop app</span> &mdash; no terminal, no command line needed for daily use.</p>
+  <p style="margin-top: 1rem; color: #6A6560; font-size: 1.4rem;">(There's also a CLI, if you're more comfortable in a terminal.)</p>
+  <p style="margin-top: 1.5rem;">Think of it as Claude, but <span class="highlight">with jazz hands</span>.</p>
+  <div class="terminal" style="margin-top: 2rem; max-width: 600px;">
+    <div class="terminal-bar">
+      <div class="terminal-title">customer-ops</div>
+    </div>
+    <div class="terminal-body">
+      <div style="color: #6A6560; font-size: 0.9rem; margin-bottom: 0.8rem;">Project: customer-ops</div>
+      <div style="background: #FAF6ED; padding: 0.85rem 1.1rem; border-radius: 10px; color: #6A6560; font-style: italic;">Ask me anything about your data&hellip;</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 19: Two paths to connect ==================== -->
+<div class="slide">
+  <div class="section-label">How to Set This Up</div>
+  <h2>Two ways to connect Google Sheets</h2>
+  <div class="security-grid" style="margin-top: 2rem;">
+    <div class="security-card safe">
+      <div class="card-title">The easy path</div>
+      <div class="card-body">
+        <strong style="color: #1A1816;">Built-in Google Workspace connector</strong><br>
+        <span style="color: #6A6560; font-size: 1rem;">Three clicks. Uses your Google login. Right default for most people.</span>
+      </div>
+    </div>
+    <div class="security-card" style="border-color: #CC785C;">
+      <div class="card-title" style="color: #CC785C;">The advanced path</div>
+      <div class="card-body">
+        <strong style="color: #1A1816;">Service account + <code>gws</code> CLI</strong><br>
+        <span style="color: #6A6560; font-size: 1rem;">More setup. File-by-file scope. For personal data or team deployments.</span>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem; color: #6A6560; font-size: 1.3rem;">Let's look at each.</p>
+</div>
+
+<!-- ==================== SLIDE 20: The easy path ==================== -->
+<div class="slide left">
+  <div class="section-label">Path 1 &mdash; The Easy Path</div>
+  <h3>Built-in Google Workspace connector</h3>
+  <ul class="steps" style="margin-top: 1.5rem;">
+    <li>Open Claude Code settings &rarr; Connectors</li>
+    <li>Click "Connect Google Workspace"</li>
+    <li>Authorize in Google's consent screen</li>
+  </ul>
+  <p style="margin-top: 2rem;"><span class="highlight">30 seconds.</span> Uses your personal Google login. The right default for most people.</p>
+  <p style="margin-top: 1rem; color: #6A6560; font-size: 1.3rem;">Claude sees whatever your Google account sees &mdash; all of Drive, optionally Gmail and Calendar if you enable those scopes.</p>
+</div>
+
+<!-- ==================== SLIDE 21: The advanced path ==================== -->
+<div class="slide left">
+  <div class="section-label">Path 2 &mdash; The Advanced Path</div>
+  <h3>Service account + <code>gws</code> CLI</h3>
+  <p style="margin-top: 1rem; color: #6A6560;">When you want more control:</p>
+  <ul class="icon-list" style="margin-top: 0.8rem;">
+    <li><span class="icon" style="color: #CC785C;">&#9679;</span><strong style="color: #1A1816;">File-by-file scope</strong> &mdash; Claude only sees sheets you explicitly share</li>
+    <li><span class="icon" style="color: #CC785C;">&#9679;</span><strong style="color: #1A1816;">Personal Gmail and Calendar off-limits</strong> by construction</li>
+    <li><span class="icon" style="color: #CC785C;">&#9679;</span><strong style="color: #1A1816;">Demonstrable data-minimization</strong> story for compliance or audit</li>
+  </ul>
+  <div class="terminal" style="margin-top: 1.8rem; max-width: 720px;">
+    <div class="terminal-bar">
+      <div class="terminal-title">customer-ops</div>
+    </div>
+    <div class="terminal-body" style="padding: 1.2rem 1.5rem;">
+      <div class="prompt-line" style="margin-bottom: 0.8rem;"><span class="prompt-caret">&gt;</span> <span class="user-input">Install the Google Workspace CLI and its skills.</span></div>
+      <span class="claude-label">Claude</span>
+      <div class="response" style="font-size: 0.95rem; line-height: 1.55;">Installed <code>gws</code> via Homebrew and added the <code>gws-sheets</code> and <code>gws-drive</code> skills. Ready to use.</div>
+    </div>
+  </div>
+  <p style="margin-top: 1.5rem; color: #6A6560; font-size: 1.2rem;">~10 min total. <code>gws</code> is community-maintained, open source, Apache-2.0.</p>
+</div>
+
+<!-- ==================== SLIDE 22: How to choose ==================== -->
+<div class="slide">
+  <div class="section-label">How to Choose</div>
+  <h2>Which path is for you?</h2>
+  <div class="security-grid" style="margin-top: 2rem;">
+    <div class="security-card safe">
+      <div class="card-title">Start here</div>
+      <div class="card-body">
+        <strong style="color: #1A1816;">Built-in connector</strong><br>
+        <span style="color: #6A6560; font-size: 1rem;">Personal workflow, your own Google account, data you're comfortable having Claude reach.</span>
+      </div>
+    </div>
+    <div class="security-card" style="border-color: #CC785C;">
+      <div class="card-title" style="color: #CC785C;">Upgrade if&hellip;</div>
+      <div class="card-body">
+        <strong style="color: #1A1816;">Service account + <code>gws</code></strong><br>
+        <span style="color: #6A6560; font-size: 1rem;">You need exact file-by-file scope, your data policy requires it, or you want personal Gmail and Calendar untouchable.</span>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top: 2.5rem; font-size: 1.6rem;">Start simple. Upgrade if you need to.</p>
+</div>
+
+<!-- ==================== SLIDE 23: Responsible use &mdash; DPA / plan ==================== -->
+<div class="slide left">
+  <div class="section-label">Responsible Use</div>
+  <h3>Know what your plan allows</h3>
+  <ul class="icon-list" style="margin-top: 1.2rem;">
+    <li><span class="icon" style="color: #CC785C;">&#9679;</span><strong style="color: #1A1816;">A DPA is required to process personal data.</strong> Anthropic provides a Data Processing Agreement on <span class="highlight">Team and Enterprise plans</span>. Personal/Pro: no DPA.</li>
+    <li><span class="icon" style="color: #CC785C;">&#9679;</span><strong style="color: #1A1816;">Data minimization still applies.</strong> Even with a DPA, only send what you actually need. Service-account scoping helps you prove it.</li>
+    <li><span class="icon" style="color: #CC785C;">&#9679;</span><strong style="color: #1A1816;">Check training opt-out.</strong> Team and Enterprise: off by default. Verify before connecting sensitive data.</li>
+  </ul>
+  <p style="margin-top: 2rem; font-size: 1.6rem; color: #CC785C;">A DPA is the legal floor.<br>Scoping and minimization are the practical floor.</p>
+</div>
+
+<!-- ==================== SLIDE 24: What not to send ==================== -->
+<div class="slide left">
+  <div class="section-label">Responsible Use</div>
+  <h3>What not to send to Claude</h3>
+  <p style="margin-top: 0.8rem; color: #6A6560;">By default, keep personal data out. If you absolutely need to send it, anonymize it first.</p>
+  <div class="security-card danger" style="margin-top: 1.5rem; max-width: 760px; width: 100%;">
+    <div class="card-title">Keep out (or anonymize if essential)</div>
+    <div class="card-body" style="margin-top: 0.8rem;">
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.3rem 0; font-size: 1.2rem;">&bull; Full customer or employee names</li>
+        <li style="padding: 0.3rem 0; font-size: 1.2rem;">&bull; Email addresses</li>
+        <li style="padding: 0.3rem 0; font-size: 1.2rem;">&bull; Phone numbers</li>
+        <li style="padding: 0.3rem 0; font-size: 1.2rem;">&bull; Postal addresses</li>
+        <li style="padding: 0.3rem 0; font-size: 1.2rem;">&bull; Personal financial details tied to named individuals</li>
+        <li style="padding: 0.3rem 0; font-size: 1.2rem;">&bull; Health or sensitive data (GDPR special category &mdash; keep out entirely)</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top: 1.8rem; font-size: 1.5rem;">You don't need names to answer <em>"how much ARR is at risk."</em><br>Send the <span class="highlight">shape</span>, not the identities.</p>
+</div>
+
+<!-- ==================== SLIDE 25: Three things to take away ==================== -->
+<div class="slide left">
+  <div class="section-label">Closing</div>
+  <h2>Three things to take away</h2>
+  <ul class="icon-list" style="margin-top: 1.5rem;">
+    <li><span class="icon" style="color: #CC785C; font-weight: 700;">1.</span><strong style="color: #1A1816;">Cross-cutting business questions are now answerable in seconds.</strong> Your data already exists &mdash; you just needed a way to ask. No dashboards, no analyst, no code.</li>
+    <li><span class="icon" style="color: #CC785C; font-weight: 700;">2.</span><strong style="color: #1A1816;">I picked Code for solo, recurring analysis.</strong> Composable with local files and scripts, file-by-file scope when I need it, persistent across sessions. Cowork wins for team-shared work.</li>
+    <li><span class="icon" style="color: #CC785C; font-weight: 700;">3.</span><strong style="color: #1A1816;">Be mindful of what you send and from which plan.</strong> Personal data needs a DPA (Team or Enterprise). Limit the scope of what's reachable. Anonymize when in doubt.</li>
+  </ul>
+  <p style="margin-top: 2rem; font-size: 1.6rem; color: #2A2420;">Conversations with your own data &mdash;<br><span class="highlight">within the scope you control</span>.</p>
+</div>
+
+<!-- ==================== SLIDE 26: Thank you ==================== -->
+<div class="slide accent-bg">
+  <h1>Thank you.</h1>
+  <p style="margin-top: 1.5rem; font-size: 1.3rem; color: #6A6560;">Scan to connect &mdash;</p>
+  <img src="contact-qr.jpeg" alt="Alejandra Soni — CCO at Groweo — contact QR code" style="margin-top: 1.5rem; max-width: 360px; width: 90%; height: auto; border-radius: 16px; box-shadow: 0 12px 35px rgba(42,36,32,0.12);">
+</div>
+
+<!-- ===== PROGRESS BAR ===== -->
+<div class="progress" id="progress"></div>
+<div class="slide-number" id="slideNumber"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+    document.getElementById('progress').style.width =
+      ((current / (slides.length - 1)) * 100) + '%';
+    document.getElementById('slideNumber').textContent =
+      (current + 1) + ' / ' + slides.length;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      showSlide(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      showSlide(current - 1);
+    } else if (e.key === 'Home') {
+      showSlide(0);
+    } else if (e.key === 'End') {
+      showSlide(slides.length - 1);
+    }
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      showSlide(current + (diff > 0 ? 1 : -1));
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.clientX < window.innerWidth / 3) {
+      showSlide(current - 1);
+    } else {
+      showSlide(current + 1);
+    }
+  });
+
+  showSlide(0);
+</script>
+</body>
+</html>

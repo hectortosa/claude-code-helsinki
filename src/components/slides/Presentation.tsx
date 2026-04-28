@@ -4,21 +4,31 @@ import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AuroraBackground } from "@/components/aurora/AuroraBackground";
 import { ForestDivider } from "@/components/forest/ForestDivider";
+import { SummerBackground } from "@/components/summer/SummerBackground";
+import { SummerForestDivider } from "@/components/summer/SummerForestDivider";
 
 interface PresentationProps {
   slides: ReactNode[];
+  /** Visual theme. Defaults to "winter" so existing decks (meetup #2) stay
+   * on the original aurora + snow look. */
+  season?: "winter" | "summer";
 }
 
-function getInitialSlide(): number {
-  if (typeof window === "undefined") return 0;
-  const hash = window.location.hash.replace("#", "");
-  const n = parseInt(hash, 10);
-  return isNaN(n) || n < 1 ? 0 : n - 1;
-}
-
-export function Presentation({ slides }: PresentationProps) {
-  const [current, setCurrent] = useState(getInitialSlide);
+export function Presentation({ slides, season = "winter" }: PresentationProps) {
+  const Background = season === "summer" ? SummerBackground : AuroraBackground;
+  const Divider = season === "summer" ? SummerForestDivider : ForestDivider;
+  // Always start at slide 0 to keep server and client renders identical.
+  // The URL hash is applied after hydration via the effect below.
+  const [current, setCurrent] = useState(0);
   const total = slides.length;
+
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    const n = parseInt(hash, 10);
+    if (!isNaN(n) && n >= 1 && n <= total) {
+      setCurrent(n - 1);
+    }
+  }, [total]);
 
   const goTo = useCallback(
     (index: number) => {
@@ -53,10 +63,10 @@ export function Presentation({ slides }: PresentationProps) {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
-      {/* Persistent aurora background */}
-      <AuroraBackground intensity="medium" className="absolute inset-0">
+      {/* Persistent themed background */}
+      <Background intensity="medium" className="absolute inset-0">
         <div className="h-screen" />
-      </AuroraBackground>
+      </Background>
 
       {/* Slide content layer - only this transitions */}
       {slides.map((slide, i) => (
@@ -74,7 +84,7 @@ export function Presentation({ slides }: PresentationProps) {
 
       {/* Persistent forest at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-20">
-        <ForestDivider />
+        <Divider />
       </div>
 
       {/* Navigation arrows */}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Snowflake, AudioLines } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -65,9 +65,9 @@ export function Header() {
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDark ? (
-                <Snowflake className="w-5 h-5" />
+                <Sun className="w-5 h-5" />
               ) : (
-                <AudioLines className="w-5 h-5" />
+                <Moon className="w-5 h-5" />
               )}
             </button>
             <Link href="/join" className="btn-primary text-sm">
@@ -83,9 +83,9 @@ export function Header() {
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDark ? (
-                <Snowflake className="w-5 h-5" />
+                <Sun className="w-5 h-5" />
               ) : (
-                <AudioLines className="w-5 h-5" />
+                <Moon className="w-5 h-5" />
               )}
             </button>
             <button

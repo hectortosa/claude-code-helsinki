@@ -15,10 +15,23 @@
   --color-finnish-blue: #003580;
   --color-finnish-white: #ffffff;
 
-  /* Aurora Colors */
+  /* Aurora Colors (kept for historical slide decks) */
   --color-aurora-green: #00ff87;
   --color-aurora-cyan: #60efff;
   --color-aurora-purple: #b967ff;
+
+  /* Summer Day Colors */
+  --color-summer-sky: #a8c8e0;
+  --color-summer-warm: #f5e6c8;
+  --color-summer-meadow: #87b98a;
+  --color-summer-pine: #4a7c59;
+
+  /* Finnish Summer Night Colors (white nights / nightless sky) */
+  --color-midnight-deep: #1a2745;
+  --color-midnight-blue: #2d425f;
+  --color-midnight-steel: #4a6182;
+  --color-midnight-glow: #c08658;
+  --color-midnight-amber: #e8a456;
 
   /* Terminal Colors */
   --color-terminal-bg: #1a1a2e;
@@ -31,7 +44,6 @@
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   /* Animations */
-  --animate-aurora: aurora 15s ease infinite;
   --animate-terminal-blink: blink 1s step-end infinite;
   --animate-fade-in: fadeIn 0.5s ease-out;
   --animate-slide-up: slideUp 0.5s ease-out;
@@ -62,7 +74,29 @@
 }
 
 @layer components {
-  /* Winter sky background - light mode */
+  /* Summer sky background - light mode (Finnish midsummer afternoon) */
+  .summer-sky {
+    background: linear-gradient(
+      180deg,
+      #a8c8e0 0%,
+      #c5dcea 45%,
+      #f5e6c8 100%
+    );
+  }
+
+  /* Finnish summer night sky - dark mode (deep blue with amber horizon) */
+  .midnight-sun-gradient {
+    background: linear-gradient(
+      180deg,
+      var(--color-midnight-deep) 0%,
+      var(--color-midnight-blue) 30%,
+      var(--color-midnight-steel) 62%,
+      var(--color-midnight-glow) 88%,
+      var(--color-midnight-amber) 100%
+    );
+  }
+
+  /* Winter sky - retained for the historical slide deck */
   .winter-sky {
     background: linear-gradient(
       180deg,
@@ -72,7 +106,7 @@
     );
   }
 
-  /* Aurora gradient background - dark mode */
+  /* Aurora gradient - retained for the historical slide deck */
   .aurora-gradient {
     background: linear-gradient(
       -45deg,
@@ -127,9 +161,14 @@
     text-wrap: balance;
   }
 
-  /* Gradient text */
+  /* Gradient text - used by the historical slide deck (aurora palette) */
   .gradient-text {
     @apply bg-gradient-to-r from-claude-coral via-aurora-purple to-finnish-blue bg-clip-text text-transparent;
+  }
+
+  /* Gradient text - summer/sunset palette for the summer-themed slide deck */
+  .gradient-text-summer {
+    @apply bg-gradient-to-r from-claude-coral via-midnight-amber to-summer-warm bg-clip-text text-transparent;
   }
 
   /* Focus visible outline */
@@ -139,6 +178,7 @@
 }
 
 /* Animations */
+/* Aurora animation - retained for the historical slide deck */
 @keyframes aurora {
   0%, 100% {
     background-position: 0% 50%;
@@ -167,6 +207,66 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes petaldrift {
+  0% {
+    transform: translateX(-40px) translateY(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(25vw) translateY(-10px);
+  }
+  50% {
+    transform: translateX(50vw) translateY(8px);
+  }
+  75% {
+    transform: translateX(75vw) translateY(-6px);
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(105vw) translateY(4px);
+    opacity: 0;
+  }
+}
+
+@keyframes fireflyHover {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0.25;
+  }
+  20% {
+    transform: translate(7px, -4px);
+    opacity: 0.95;
+  }
+  45% {
+    transform: translate(-4px, 5px);
+    opacity: 0.4;
+  }
+  70% {
+    transform: translate(5px, 3px);
+    opacity: 1;
+  }
+  85% {
+    transform: translate(-3px, -2px);
+    opacity: 0.55;
+  }
+}
+
+.animate-petaldrift {
+  animation: petaldrift var(--day-dur, 30s) linear infinite;
+}
+
+.dark .animate-petaldrift {
+  animation-name: fireflyHover;
+  animation-timing-function: ease-in-out;
+  animation-duration: var(--night-dur, 6s);
+}
+
+/* Snowfall - retained for the historical slide deck */
 @keyframes snowfall {
   0% {
     transform: translateY(-10px) translateX(0);

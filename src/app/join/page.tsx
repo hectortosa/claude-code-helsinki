@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
-import { AuroraBackground } from "@/components/aurora/AuroraBackground";
+import { SummerBackground } from "@/components/summer/SummerBackground";
 
 const ROLE_OPTIONS: Record<string, string> = {
   developer: "Software Developer",
@@ -71,7 +71,7 @@ export default function JoinPage() {
 
   return (
     <>
-      <AuroraBackground intensity="subtle">
+      <SummerBackground intensity="subtle">
         <section className="container mx-auto px-4 py-20">
           <div className="max-w-2xl mx-auto">
             {/* Header */}
@@ -361,7 +361,7 @@ export default function JoinPage() {
             </form>
           </div>
         </section>
-      </AuroraBackground>
+      </SummerBackground>
     </>
   );
 }

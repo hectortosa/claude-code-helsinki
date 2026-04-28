@@ -11,15 +11,14 @@ interface Snowflake {
   opacity: number;
 }
 
-// Generate snowflakes with varied properties
 function generateSnowflakes(count: number): Snowflake[] {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    left: Math.random() * 100, // percentage across viewport
-    size: 2 + Math.random() * 3, // 2-5px
-    duration: 12 + Math.random() * 10, // 12-22s fall time
-    delay: Math.random() * 10, // staggered start
-    opacity: 0.4 + Math.random() * 0.4, // 0.4-0.8 opacity
+    left: Math.random() * 100,
+    size: 2 + Math.random() * 3,
+    duration: 12 + Math.random() * 10,
+    delay: Math.random() * 10,
+    opacity: 0.4 + Math.random() * 0.4,
   }));
 }
 
@@ -27,7 +26,6 @@ export function SnowParticles() {
   const [snowflakes, setSnowflakes] = useState<Snowflake[]>([]);
 
   useEffect(() => {
-    // Generate snowflakes only on client to avoid hydration mismatch
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSnowflakes(generateSnowflakes(60));
   }, []);
