@@ -25,6 +25,41 @@ interface MeetupPresentation {
 
 const MEETUP_PRESENTATIONS: MeetupPresentation[] = [
   {
+    date: "May 27, 2026",
+    title: "Meetup #4",
+    slidesUrl: "/slides/20260527",
+    speakers: [
+      {
+        name: "Ivana Pesic",
+        role: "CPO, Headai",
+        talk: "Skills, Both Kinds",
+        slidesUrl: "https://house11.ai/skills-both-kinds-deck.html#1",
+        linkedin: "https://www.linkedin.com/in/ipesic/",
+      },
+      {
+        name: "Christian Möller",
+        role: "Founding AI Engineer, Nomain",
+        talk: "From Ticket to Production: A Claude-Native Team Workflow",
+        slidesUrl: "/presentations/20260527/christian-moller.html",
+        linkedin: "https://www.linkedin.com/in/christian-m%C3%B6ller-592741142/",
+      },
+      {
+        name: "Markus Hjort",
+        role: "CTO & Co-Founder, Bitmagic",
+        talk: "AI-native tech startup",
+        slidesUrl: "/presentations/20260527/markus-hjort.pdf",
+        linkedin: "https://www.linkedin.com/in/markus-hjort-3b333/",
+      },
+      {
+        name: "Nimer Singh",
+        role: "Researcher, F-Secure",
+        talk: "How Claude Made Me a 10x Researcher",
+        slidesUrl: "/presentations/20260527/nimer-singh.html",
+        linkedin: "https://www.linkedin.com/in/nimer-amol-singh/",
+      },
+    ],
+  },
+  {
     date: "April 27, 2026",
     title: "Meetup #3",
     slidesUrl: "/slides/20260427",
