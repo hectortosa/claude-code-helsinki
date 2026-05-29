@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>From ticket to production — Claude Code Meetup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a1a;
+    --bg-alt: #212121;
+    --elev-1: #2a2a2a;
+    --elev-2: #313131;
+    --border: #3a3a3a;
+    --border-hover: #525252;
+    --text: #f0f0f0;
+    --text-2: #a8a8a8;
+    --text-3: #787878;
+    --accent: #6ee77a;            /* Nomain entity green (dark) */
+    --accent-bright: #24c40d;     /* toggle green */
+    --accent-soft: rgba(110, 231, 122, 0.12);
+    --accent-border: rgba(110, 231, 122, 0.3);
+    --running: #60a5fa;
+    --pending: #facc15;
+    --failed: #f87171;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    height: 100%;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 4.5rem 6rem;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeIn 0.25s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 2.75rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.75rem;
+  }
+  h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+  }
+  p, li {
+    font-size: 1.35rem;
+    line-height: 1.55;
+    color: var(--text-2);
+  }
+  strong { color: var(--text); font-weight: 600; }
+  .em { color: var(--accent); font-weight: 500; }
+
+  ul { list-style: none; padding: 0; }
+  ul li {
+    padding: 0.65rem 0 0.65rem 1.75rem;
+    position: relative;
+  }
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 1.25rem;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92em;
+    background: var(--elev-1);
+    padding: 0.12em 0.4em;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--accent);
+  }
+
+  /* Chrome */
+  .nav {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10;
+  }
+  .nav button {
+    background: var(--elev-1);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 38px; height: 38px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.15s;
+  }
+  .nav button:hover { background: var(--elev-2); border-color: var(--border-hover); }
+  .counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-3);
+    min-width: 50px;
+    text-align: center;
+  }
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+    z-index: 10;
+  }
+  .brand {
+    position: fixed;
+    top: 1.5rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-3);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    z-index: 10;
+  }
+  .brand .dot {
+    width: 9px; height: 9px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-bright);
+  }
+
+  /* Logo */
+  .nomain-logo {
+    height: 32px;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+  }
+  .nomain-logo.lg { height: 48px; }
+  .nomain-logo.sm { height: 22px; opacity: 0.85; }
+
+  /* Layouts */
+  .title-slide {
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .title-slide .eyebrow {
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .title-slide h1 { font-size: 5rem; }
+  .title-slide .sub {
+    font-size: 1.6rem;
+    color: var(--text-2);
+    margin-top: 1rem;
+    max-width: 50ch;
+  }
+  .title-slide .author {
+    margin-top: 3rem;
+    color: var(--text-3);
+    font-size: 1.05rem;
+  }
+  .title-slide .author span { color: var(--text); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  .card {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+  }
+  .card h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .card h4 .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .card p {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .pull-quote {
+    font-size: 2.5rem;
+    line-height: 1.25;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+    border-left: 3px solid var(--accent);
+    padding-left: 2rem;
+  }
+  .pull-quote .accent { color: var(--accent); }
+
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.6rem;
+  }
+
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .pipe-step {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .pipe-step .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .pipe-step h4 {
+    font-size: 1.15rem;
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+  .pipe-step ul li {
+    font-size: 0.95rem;
+    padding: 0.3rem 0 0.3rem 1.25rem;
+  }
+  .pipe-step ul li::before { top: 0.85rem; width: 5px; height: 5px; }
+
+  .file-tree {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--text-2);
+    line-height: 1.7;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .file-tree .dir { color: var(--accent); }
+  .file-tree .comment { color: var(--text-3); }
+
+  .big-number {
+    font-size: 6rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .stat-row { display: flex; gap: 4rem; margin-top: 1rem; }
+  .stat .lbl { color: var(--text-3); font-size: 1rem; margin-top: 0.5rem; }
+
+  .takeaways li {
+    font-size: 1.5rem;
+    color: var(--text);
+    padding: 1rem 0 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .takeaways li:last-child { border-bottom: none; }
+  .takeaways li::before { top: 1.55rem; width: 10px; height: 10px; }
+  .takeaways li span { color: var(--text-2); font-size: 1.15rem; display: block; margin-top: 0.3rem; }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1: Title -->
+  <section class="slide title-slide active">
+    <img src="nomain-type-logo.svg" alt="Nomain" class="nomain-logo lg" style="margin-bottom: 2.5rem;" />
+    <div class="eyebrow">Claude Code Meetup · 2026</div>
+    <h1>From ticket<br/>to production.</h1>
+    <p class="sub">A Claude-native team workflow.</p>
+    <div class="author">
+      <span>Christian Möller</span> · engineer at Nomain
+    </div>
+  </section>
+
+  <!-- 2: Quick intro -->
+  <section class="slide">
+    <img src="nomain-type-logo.svg" alt="Nomain" class="nomain-logo" style="height: 56px; margin-bottom: 2.5rem;" />
+    <h2 style="margin-bottom: 0.4rem;">Hi, I'm Christian.</h2>
+    <p style="color: var(--text-3); font-size: 1.2rem; margin-bottom: 1.5rem;">Engineer at Nomain.</p>
+    <p style="max-width: 64ch;">
+      We turn complex <strong>mainframe systems</strong> into clear, accessible knowledge — so engineers, analysts and business stakeholders can all understand legacy code, onboard faster, and plan modernization with confidence.
+    </p>
+    <div class="card" style="margin-top: 2rem; max-width: 64ch; border-color: var(--accent-border); background: var(--accent-soft);">
+      <h4 style="color: var(--accent);">We're hiring an AI Engineer 🚀</h4>
+      <p style="margin-top: 0.5rem; color: var(--text);">
+        Come build the agent that powers all of this. Find me after, or scan at the end.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3: The framing -->
+  <section class="slide">
+    <h3>What this talk is</h3>
+    <h2>How our team actually works with Claude — day to day.</h2>
+    <p style="max-width: 64ch; margin-top: 1rem;">
+      Not a framework. Not best practices. Just the workflow we converged on since we switched to Claude in December — what we share, where we put it, and how a ticket flows from Linear all the way to production telemetry.
+    </p>
+  </section>
+
+  <!-- 3: The shared-agents problem -->
+  <section class="slide">
+    <h3>The problem we kept hitting</h3>
+    <h2>Everyone's running agents. Same codebase. Different&nbsp;decisions.</h2>
+    <p style="max-width: 64ch; margin-top: 1rem;">
+      We switched to Claude in December. Every engineer is now running their own Claude — often several in parallel, across worktrees and background tasks. Without something shared, those agents make different decisions on the same problem: different naming, different test patterns, different log levels, different security assumptions.
+    </p>
+    <p style="max-width: 64ch; margin-top: 1.25rem;">
+      So the real question stopped being <em class="em">how do I prompt better</em>. It became <strong>what do all our agents need to know, and where does it live?</strong> Everything below is what we've built up since.
+    </p>
+  </section>
+
+  <!-- 3.5: Monorepo -->
+  <section class="slide">
+    <h3>One thing that helps a lot</h3>
+    <h2>We work in a monorepo.</h2>
+    <p style="max-width: 64ch; margin-top: 1rem;">
+      Backend services, web apps, the VS Code extension, infrastructure, docs, eval datasets — all in one repo. So whichever feature an engineer is touching, their Claude has the full picture available in one place.
+    </p>
+    <p style="max-width: 64ch; margin-top: 1.25rem;">
+      It also gives us a single, obvious home for the shared substrate: <code>CLAUDE.md</code> at the root, skills and agents under <code>.claude/</code> — read by every session, from every corner of the codebase.
+    </p>
+  </section>
+
+  <!-- 3.6: The principle -->
+  <section class="slide">
+    <h3>The principle behind it all</h3>
+    <h2>We adapt Claude to our ways of working — not the other way around.</h2>
+    <p style="max-width: 64ch; margin-top: 1.5rem;">
+      Our conventions exist because they're right for the problem — conv commits, xUnit v3, our audit-logging boundary, our Linear taxonomy, our LADR format. Every skill, <code>CLAUDE.md</code> entry and hook exists to teach the model how <em>we</em> work, so it contributes without dragging the codebase toward its training defaults.
+    </p>
+    <p style="max-width: 64ch; margin-top: 1.25rem;">
+      The flip side would be picking tools because Claude prefers them, or quietly relaxing our standards because the model keeps drifting from them. We try hard not to.
+    </p>
+  </section>
+
+  <!-- 4: Shared substrate -->
+  <section class="slide">
+    <h3>The substrate · what we share</h3>
+    <h2>Our rule: if a teammate would benefit, it goes in the repo.</h2>
+    <div class="two-col" style="margin-top: 2rem;">
+      <div>
+        <p style="margin-bottom: 1.25rem;">
+          Claude reads from two places: your personal home folder (<code>~/.claude/</code> on your machine), and a <code>.claude/</code> folder inside the repo. The personal one is invisible to teammates — so the split is explicit:
+        </p>
+        <ul>
+          <li><code>~/.claude/</code> — personal taste, individual memory</li>
+          <li><code>CLAUDE.md</code> — facts every agent needs at startup</li>
+          <li><code>.claude/skills/</code> — repeatable team workflows</li>
+          <li><code>.claude/agents/</code> — narrow-domain subagents</li>
+        </ul>
+      </div>
+      <div class="file-tree">
+<span class="dir">nomain-monorepo/</span>
+├── <span class="dir">.claude/</span>
+│   ├── <span class="dir">skills/</span>      <span class="comment"># /manage-issue, /mr-ready ...</span>
+│   ├── <span class="dir">agents/</span>      <span class="comment"># mr-reviewer, iac-expert</span>
+│   └── settings.json
+├── CLAUDE.md          <span class="comment"># build, test, audit, IaC</span>
+└── Nomain.Docs/
+    └── architecture/  <span class="comment"># LADRs</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5: CLAUDE.md is the system prompt -->
+  <section class="slide">
+    <div class="two-col">
+      <div>
+        <h3>Our CLAUDE.md</h3>
+        <h2>What we put in it.</h2>
+        <p style="margin-top: 1.5rem;">
+          Things we'd otherwise re-explain in every conversation, or things a new hire would get wrong without being told. We keep it short and curated — it's a system prompt, not a wiki.
+        </p>
+        <p style="margin-top: 1rem;">
+          We work in a monorepo, so the root <code>CLAUDE.md</code> covers cross-cutting rules. Subprojects can add their own <code>CLAUDE.md</code> for context Claude only needs when working in that subtree.
+        </p>
+        <p style="margin-top: 1rem; color: var(--text-3); font-size: 1.05rem;">
+          Three real entries from the root →
+        </p>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom: 1rem;">
+          <h4>Test runner quirk</h4>
+          <p>xUnit v3: <code>dotnet test</code> silently does nothing. Use <code>dotnet run --project</code>. Saves the agent a 5-minute dead end every time.</p>
+        </div>
+        <div class="card" style="margin-bottom: 1rem;">
+          <h4>Audit logging rule (ISO 27001)</h4>
+          <p>Tenant lifecycle, admin actions, auth events → <code>IAuditLogger</code>, not <code>ILogger</code>. Different EventId range, 12-month retention.</p>
+        </div>
+        <div class="card">
+          <h4>Commit hygiene</h4>
+          <p>Conventional commits. No customer data. Co-author trailer for Claude. <code>--no-verify</code> is forbidden unless asked.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6: The pipeline overview -->
+  <section class="slide">
+    <h3>Our dev workflow</h3>
+    <h2>From ticket creation to production.</h2>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="num">01</div>
+        <h4>Pre</h4>
+        <ul>
+          <li><code>/manage-issue</code></li>
+          <li>Linear MCP</li>
+          <li>Embedded Linear guide</li>
+        </ul>
+      </div>
+      <div class="pipe-step">
+        <div class="num">02</div>
+        <h4>Dev</h4>
+        <ul>
+          <li><code>/implement-issue-tdd</code></li>
+          <li><code>/qa-evaluation</code> (agent changes)</li>
+          <li><code>/mr-ready</code> + <code>mr-reviewer</code></li>
+        </ul>
+      </div>
+      <div class="pipe-step">
+        <div class="num">03</div>
+        <h4>Post</h4>
+        <ul>
+          <li><code>/triage-ast</code>, <code>/triage-analysis</code></li>
+          <li><code>/usage-analytics</code>, <code>/agent-analytics</code></li>
+          <li>Findings → Linear</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 2.5rem; max-width: 72ch;">
+      Each step is a skill — a markdown file with a procedure, invoked by name. The procedure itself is what we review and iterate on, not the prompts people happen to type.
+    </p>
+  </section>
+
+  <!-- 7: PRE -->
+  <section class="slide">
+    <div class="label">PRE-DEVELOPMENT</div>
+    <h2>/manage-issue</h2>
+    <div class="two-col" style="margin-top: 1rem;">
+      <div>
+        <p style="margin-bottom: 1.25rem;">
+          Calls the Linear MCP, but the skill is mostly a markdown reference doc: our team IDs, label taxonomy, severity ladder, "definition of ready", which team owns what.
+        </p>
+        <p>
+          Without it the model invents reasonable-looking labels that don't exist, picks the wrong team, or writes acceptance criteria too vague for the next agent to act on.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Tickets grounded in real code <span class="tag">monorepo</span></h4>
+        <p style="margin-top: 0.75rem;">
+          Because everything lives in one repo, Claude has the actual code open while writing the ticket. Scope, acceptance criteria, and file references point at real classes — not what the model imagines exists.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8a: DEV — writing -->
+  <section class="slide">
+    <div class="label">DEV · WRITING THE CODE</div>
+    <h2>One entry skill. Companion skills for what you're touching.</h2>
+    <div class="two-col" style="margin-top: 1.75rem;">
+      <div>
+        <div class="card" style="margin-bottom: 1rem;">
+          <h4>/implement-issue-tdd <span class="tag">entry</span></h4>
+          <p style="margin-top: 0.6rem;">Plans a test list up front, then drives Red → Green → Refactor cycle-by-cycle. Tests stay honest because they're written first.</p>
+        </div>
+        <div class="card">
+          <h4>/implement-issue <span class="tag">entry</span></h4>
+          <p style="margin-top: 0.6rem;">Same setup (branch, plan, approval) without the strict TDD loop — for changes where TDD doesn't fit.</p>
+        </div>
+      </div>
+      <div>
+        <p style="margin-bottom: 1rem; color: var(--text-3); font-size: 1.05rem;">
+          From there, Claude reaches for the right companion based on what we're working on:
+        </p>
+        <ul style="font-size: 1.1rem;">
+          <li><code>/qa-evaluation</code> — agent prompt &amp; tool changes; can self-run and iterate</li>
+          <li><code>/ladr</code> — capture an architecture decision</li>
+          <li><code>/local-db</code> — explore the local Postgres knowledge graph</li>
+          <li><code>/aspire</code> — run, debug, inspect the distributed app</li>
+          <li><code>iac-expert</code> subagent + <code>/bicep-config</code>, <code>/cicd-pipelines</code>, <code>/add-new-environment</code> — anything in <code>iac/</code> or <code>.gitlab/</code></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8b: DEV — shipping -->
+  <section class="slide">
+    <div class="label">DEV · SHIPPING</div>
+    <h2>One command to ship. CI does the first review.</h2>
+    <div class="grid-3" style="margin-top: 2rem;">
+      <div class="card">
+        <h4>/mr-ready <span class="tag">skill</span></h4>
+        <p style="margin-top: 0.6rem;">Builds, runs tests, commits with conv-commit, pushes, opens the MR using our GitLab template. Then starts a 4-minute <code>/loop</code> to watch the pipeline and new review threads.</p>
+      </div>
+      <div class="card">
+        <h4>mr-reviewer · Review <span class="tag">CI job</span></h4>
+        <p style="margin-top: 0.6rem;">A GitLab CI job (<code>mr-claude-review.yml</code>) invokes the <code>mr-reviewer</code> subagent on every MR. It posts each finding as a separate resolvable thread with severity prefixes (<code>blocker:</code>, <code>fix:</code>, <code>nit:</code>) — landed on after our first version dropped one wall-of-text comment nobody read.</p>
+      </div>
+      <div class="card">
+        <h4>mr-reviewer · Address <span class="tag">local</span></h4>
+        <p style="margin-top: 0.6rem;">When the monitoring loop spots new threads — from CI or human reviewers — it delegates back to <code>mr-reviewer</code> in <strong>Address mode</strong>. The agent triages each thread, presents its plan, and only changes code with explicit approval. It never resolves threads — only the developer does.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9: POST -->
+  <section class="slide">
+    <div class="label">POST-MERGE</div>
+    <h2>The skill pattern, applied to ops.</h2>
+    <div class="grid-3" style="margin-top: 2rem;">
+      <div class="card">
+        <h4>Triage <span class="tag">ops</span></h4>
+        <p style="margin-top: 0.6rem;"><code>/triage-ast</code> and <code>/triage-analysis</code> pull recent logs from Azure Log Analytics, cluster recurring failures, and offer to file Linear tickets — with the cluster signature in the body so duplicates collapse.</p>
+      </div>
+      <div class="card">
+        <h4>Usage analytics <span class="tag">prod</span></h4>
+        <p style="margin-top: 0.6rem;"><code>/usage-analytics</code> wraps the KQL we kept rewriting by hand — active tenants, message volume, token spend, Deep Insights usage.</p>
+      </div>
+      <div class="card">
+        <h4>Agent analytics <span class="tag">prod</span></h4>
+        <p style="margin-top: 0.6rem;"><code>/agent-analytics</code> looks at our own agent in production — tool-call distributions, latency, answer-quality scores, failure modes. Findings often loop straight back into a new <code>/qa-evaluation</code> dataset.</p>
+      </div>
+    </div>
+    <p style="margin-top: 2.25rem; max-width: 72ch; color: var(--text-3); font-size: 1.1rem;">
+      Each one is just <em>a procedure one of us did manually, written down so nobody has to remember it again.</em>
+    </p>
+  </section>
+
+  <!-- 10: Pull quote -->
+  <section class="slide" style="justify-content: center;">
+    <div class="pull-quote">
+      Write it <span class="accent">once.</span><br/>The whole team's agents run it <span class="accent">forever.</span>
+    </div>
+    <p style="margin-top: 2.5rem; color: var(--text-3); font-size: 1.1rem; max-width: 60ch;">
+      Skills, CLAUDE.md, agents — every convention you encode compounds across the team.
+    </p>
+  </section>
+
+  <!-- 11: Warnings -->
+  <section class="slide">
+    <h3>Things we've learned along the way</h3>
+    <ul class="takeaways">
+      <li>Keep skills simple and code-invariant
+        <span>The less a skill hard-codes — specific files, module names, exact paths — the longer it stays useful. We try to encode the <em>procedure</em>, not the implementation details that move when we refactor.</span>
+      </li>
+      <li>Mix in hooks where determinism matters
+        <span>A skill is still a prompt — the model has to read and follow it. For steps that must happen the same way every time (linting, version bumps, validation), a Claude Code hook is more reliable than asking the model nicely. We do this in a few skills; we should do it in more.</span>
+      </li>
+      <li>Invest in a skill if it's worth it
+        <span>Some skills are quick wins. Others — like our MR reviewer — take several iterations to get right: what to report, at what confidence, how the findings show up in GitLab. We've learned to pick the few skills that genuinely deserve that effort, and not over-invest in the rest.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 12: Close -->
+  <section class="slide" style="justify-content: center;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 4rem; align-items: center; width: 100%;">
+      <div>
+        <div class="eyebrow" style="color: var(--accent); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; font-size: 1rem; margin-bottom: 1.5rem;">Over to you</div>
+        <h1 style="font-size: 3.8rem;">What's working —<br/>and what isn't —<br/><span style="color: var(--accent);">in your team?</span></h1>
+        <p style="margin-top: 2rem; color: var(--text-3); font-family: 'JetBrains Mono', monospace; font-size: 0.95rem;">
+          christian.moller@nomain.com
+        </p>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+        <img src="nomain-type-logo.svg" alt="Nomain" class="nomain-logo" style="height: 64px; display: block;" />
+        <p style="color: var(--accent); font-weight: 600; font-size: 1.25rem; margin: 0;">
+          We're hiring an AI Engineer
+        </p>
+        <div style="background: white; padding: 1rem; border-radius: 12px;">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=0&data=https%3A%2F%2Fassets.nomain.com%2Fcareers%2FAI_Engineer_Job_Posting.html"
+            alt="QR code to AI Engineer job posting"
+            width="240"
+            height="240"
+            style="display: block;"
+          />
+        </div>
+        <p style="color: var(--text-3); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; margin: 0;">
+          assets.nomain.com/careers
+        </p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="previous">‹</button>
+  <div class="counter" id="counter">1 / 16</div>
+  <button id="next" aria-label="next">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  let i = 0;
+
+  function go(n) {
+    slides[i].classList.remove('active');
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides[i].classList.add('active');
+    counter.textContent = `${i + 1} / ${slides.length}`;
+    progress.style.width = `${((i + 1) / slides.length) * 100}%`;
+  }
+
+  document.getElementById('next').onclick = () => go(i + 1);
+  document.getElementById('prev').onclick = () => go(i - 1);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') go(i + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(i - 1);
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+  });
+  go(0);
+</script>
+</body>
+</html>

@@ -68,19 +68,25 @@ export function Presentation({ slides, season = "winter" }: PresentationProps) {
         <div className="h-screen" />
       </Background>
 
-      {/* Slide content layer - only this transitions */}
-      {slides.map((slide, i) => (
-        <div
-          key={i}
-          className="absolute inset-0 z-10 flex items-center justify-center px-12 pb-24 transition-opacity duration-500 ease-in-out"
-          style={{
-            opacity: i === current ? 1 : 0,
-            pointerEvents: i === current ? "auto" : "none",
-          }}
-        >
-          {slide}
-        </div>
-      ))}
+      {/* Slide content layer - only mount current ± 1 so Arc's compositor
+          isn't fighting all N layers at once. */}
+      {slides.map((slide, i) => {
+        const nearby = Math.abs(i - current) <= 1;
+        return (
+          <div
+            key={i}
+            className="absolute inset-0 z-10 flex items-center justify-center px-12 pb-24 transition-opacity duration-200 ease-out"
+            style={{
+              opacity: i === current ? 1 : 0,
+              pointerEvents: i === current ? "auto" : "none",
+              willChange: nearby ? "opacity" : undefined,
+              transform: "translateZ(0)",
+            }}
+          >
+            {nearby ? slide : null}
+          </div>
+        );
+      })}
 
       {/* Persistent forest at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-20">
